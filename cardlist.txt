@@ -1,0 +1,2 @@
+05:28:13 2016 10 20	 Id:1| 	Gold Gear| 	 Attribute:light| 	 Attack:1500| 	 Defence:1000
+05:30:07 2016 10 20	 |Id:2	 |Silver Gear	 |Attribute:light	 |Attack:1000	 |Defence:1500
