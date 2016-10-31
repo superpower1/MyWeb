@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+<TITLE>Change your Card</TITLE>
+<h2>Please insert any values with correct cardID:</h2>
+</HEAD>
+<BODY>
+<form action="modifyCardFormhandler.php" method="post">
+<table>
+
+<tr bgcolor="#3399FF">
+    <td>Card Id:</td>
+    <td><input type="text" name="id" size="20" /></td>
+</tr>
+
+<tr bgcolor="#CCCCCC">
+    <td>Card Name:</td>
+    <td><input type="text" name="cardname" size="20" /></td>
+</tr>
+
+<tr bgcolor="#3399FF">
+    <td>Attribute:</td>
+    <td>
+        <select name="attribute">
+            <option value="">Please select</option>
+            <option value="Light">Light</option>
+            <option value="Dark">Dark</option>
+            <option value="Earth">Earth</option>
+            <option value="Fire">Fire</option>
+            <option value="Water">Water</option>
+            <option value="Wind">Wind</option>
+        </select>
+    </td>
+</tr>
+
+<tr bgcolor="#CCCCCC">
+    <td>Attack:</td>
+    <td><input type="text" name="attack" size="10" /></td>
+</tr>
+
+<tr bgcolor="#3399FF">
+    <td>Defence:</td>
+    <td><input type="text" name="defence" size="10" /></td>
+</tr>
+
+</table>
+
+<input type="reset" value="Reset"/>
+<input type="submit" value="Change"/></td>
+
+</form>
+
+</BODY>
+</HTML>

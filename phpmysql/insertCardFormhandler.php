@@ -30,6 +30,19 @@ if(!get_magic_quotes_gpc()){
     $defence = addslashes($defence);
 }
 
+try{
+    $dbconnect = new PDO('mysql:host=localhost;dbname=veda','sp1','superpower1');
+}catch(PDOException $exception){
+    echo "Connection error message: ".$exception->getMessage();
+}
+
+$sqlquery = "INSERT INTO cards(id, name, attribute, attack, defence) 
+    VALUES('$id', '$cardname', '$attribute', '$attack', '$defence')";
+    
+if($dbconnect->exec($sqlquery)) echo "A new card has been collected.<br />";
+
+
+/*
 @ $db = mysqli_connect('localhost','sp1','superpower1','veda');
 
 if(mysqli_connect_errno()){
@@ -44,7 +57,12 @@ if(!mysqli_query($db, $q)) echo "No new card has been added to database.";
 else echo "New card has been added to database.";
 
 mysqli_close($db);
-
+*/
 ?>
+<form action="searchCardformhandler.php" method="post">
+        Fill card id:
+        <input name="cardID" type="int" size="20"/> <br />
+        <input name="submit" type="submit" value="Find"/>
+    </form>
 </body>
 </html>
