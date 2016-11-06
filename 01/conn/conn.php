@@ -1,9 +1,9 @@
 <?php
 class opmysql{
 	private $host = 'localhost';			//服务器地址
-	private $name = 'root';					//登录账号
-	private $pwd = '111';					//登录密码
-	private $dBase = 'db_reglog';			//数据库名称
+	private $name = 'sp1';					//登录账号
+	private $pwd = 'superpower1';					//登录密码
+	private $dBase = 'users';			//数据库名称
 	private $conn = '';						//数据库链接资源
 	private $result = '';					//结果集
 	private $msg = '';						//返回结果
@@ -27,36 +27,36 @@ class opmysql{
 	}
 	//链接数据库
 	function init_conn(){
-		$this->conn=@mysql_connect($this->host,$this->name,$this->pwd);
-		@mysql_select_db($this->dBase,$this->conn);
-		mysql_query("set names gb2312");
+		$this->conn=@mysqli_connect($this->host,$this->name,$this->pwd);
+		@mysqli_select_db($this->dBase,$this->conn);
+		mysqli_query("set names gb2312");
 	}
 	//查询结果
-	function mysql_query_rst($sql){
+	function mysqli_query_rst($sql){
 		if($this->conn == ''){
 			$this->init_conn();
 		}
-		$this->result = @mysql_query($sql,$this->conn);
+		$this->result = @mysqli_query($sql,$this->conn);
 	}
 	//取得字段数 
 	function getFieldsNum($sql){
-		$this->mysql_query_rst($sql);
-		$this->fieldsNum = @mysql_num_fields($this->result);
+		$this->mysqli_query_rst($sql);
+		$this->fieldsNum = @mysqli_num_fields($this->result);
 	}
 	//取得查询结果数
 	function getRowsNum($sql){
-		$this->mysql_query_rst($sql);
-		if(mysql_errno() == 0){
-			return @mysql_num_rows($this->result);
+		$this->mysqli_query_rst($sql);
+		if(mysqli_connect_errno() == 0){
+			return @mysqli_num_rows($this->result);
 		}else{
 			return '';
 		}	
 	}
 	//取得记录数组（单条记录）
 	function getRowsRst($sql){
-		$this->mysql_query_rst($sql);
-		if(mysql_error() == 0){
-			$this->rowsRst = mysql_fetch_array($this->result,MYSQL_ASSOC);
+		$this->mysqli_query_rst($sql);
+		if(mysqli_connect_errno() == 0){
+			$this->rowsRst = mysqli_fetch_array($this->result,MYSQL_ASSOC);
 			return $this->rowsRst;
 		}else{
 			return '';
@@ -64,9 +64,9 @@ class opmysql{
 	}
 	//取得记录数组（多条记录）
 	function getRowsArray($sql){
-		$this->mysql_query_rst($sql);
-		if(mysql_errno() == 0){
-			while($row = mysql_fetch_array($this->result,MYSQL_ASSOC)) {
+		$this->mysqli_query_rst($sql);
+		if(mysqli_connect_errno() == 0){
+			while($row = mysqli_fetch_array($this->result,MYSQL_ASSOC)) {
 				$this->rowsArray[] = $row;
 			}
 			return $this->rowsArray;
@@ -79,9 +79,9 @@ class opmysql{
 		if($this->conn == ''){
 			$this->init_conn();
 		}
-		@mysql_query($sql);
-		$this->rowsNum = @mysql_affected_rows();
-		if(mysql_errno() == 0){
+		@mysqli_query($sql);
+		$this->rowsNum = @mysqli_affected_rows();
+		if(mysqli_connect_errno() == 0){
 			return $this->rowsNum;
 		}else{
 			return '';
@@ -89,10 +89,10 @@ class opmysql{
 	}
 	//获取对应的字段值
 	function getFields($sql,$fields){
-		$this->mysql_query_rst($sql);
-		if(mysql_errno() == 0){
-			if(mysql_num_rows($this->result) > 0){
-				$tmpfld = @mysql_fetch_row($this->result);
+		$this->mysqli_query_rst($sql);
+		if(mysqli_connect_errno() == 0){
+			if(mysqli_num_rows($this->result) > 0){
+				$tmpfld = @mysqli_fetch_row($this->result);
 				$this->fields = $tmpfld[$fields];
 				
 			}
@@ -104,14 +104,14 @@ class opmysql{
 	
 	//错误信息
 	function msg_error(){
-		if(mysql_errno() != 0) {
-			$this->msg = mysql_error();
+		if(mysqli_connect_errno() != 0) {
+			$this->msg = mysqli_connect_error();
 		}
 		return $this->msg;
 	}
 	//释放结果集
 	function close_rst(){
-		mysql_free_result($this->result);
+		mysqli_free_result($this->result);
 		$this->msg = '';
 		$this->fieldsNum = 0;
 		$this->rowsNum = 0;
@@ -121,7 +121,7 @@ class opmysql{
 	//关闭数据库
 	function close_conn(){
 		$this->close_rst();
-		mysql_close($this->conn);
+		mysqli_close($this->conn);
 		$this->conn = '';
 	}
 }

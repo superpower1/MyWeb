@@ -36,9 +36,9 @@
         <input id="answer" name="answer" type="text" />
         <div id="answerdiv">Please enter your answer for your secret question</div>
       </div>
-      <div id="regrealnamediv"><b>True name:</b>
+      <div id="regrealnamediv"><b>Real name:</b>
         <input id="realname" name="realname" type="text" />
-        <div id="realnamediv">Please enter your true name</div>
+        <div id="realnamediv">Please enter your real name</div>
       </div>
       <div id="regbirthdaydiv"><b>DOB:</b>
         <input id="birthday" name="birthday" type="text" />
@@ -48,7 +48,14 @@
         <input id="telephone" name="telephone" type="text" />
         <div id="telephonediv">Please enter your contact number</div>
       </div>
-      
+      <div id="regaddressdiv"><b>Address:</b>
+        <input id="address" name="address" type="text" />
+        <div id="addressdiv">Please enter your address</div>
+      </div>
+      <div id="regiddiv"><b>ID:</b>
+        <input id="id" name="id" type="text" />
+        <div id="iddiv">Please enter your Citizen Identity Card number</div>
+      </div>
     </div>
     <div id="btndiv2">
       <button id="regbtn" disabled="disabled">&nbsp;</button>

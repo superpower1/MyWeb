@@ -161,18 +161,18 @@ body,td,th{
 	height:20px;
 	text-align:left;
 }
-#regname,#regpwd1,#regpwd2,#email,#question,#answer,#realname,#birthday,#telephone,#qq{
+#regname,#regpwd1,#regpwd2,#email,#question,#answer,#realname,#birthday,#telephone,#address,#id{
 	border:1px #66CC00 solid;
-	width: 135px;
+	width: 130px;
 	height: 18px;
 }
-#namediv,#pwddiv1,#pwddiv2,#emaildiv,#questiondiv,#answerdiv,#realnamediv,#birthdaydiv,#telephonediv,#qqdiv{
+#namediv,#pwddiv1,#pwddiv2,#emaildiv,#questiondiv,#answerdiv,#realnamediv,#birthdaydiv,#telephonediv,#addressdiv,#iddiv{
 	position: absolute;
 	top: 0px;
-	left: 210px;
+	left: 250px;
 	border:1px #f0f0f0 dashed;
 	background-color:#FEFEE2;
-	width: 200px;
+	width: 290px;
 	height:25px;
 	color: #ADADAD;
 	line-height:23px;
@@ -226,10 +226,18 @@ body,td,th{
 	height:20px;
 	text-align:left;
 }
-#regqqdiv{
+#regaddressdiv{
 	position:relative;
-	top:281px;
-	left:255px;
+	top:282px;
+	left:250px;
+	width:410px;
+	height:20px;
+	text-align:left;
+}
+#regiddiv{
+	position:relative;
+	top:282px;
+	left:250px;
 	width:410px;
 	height:20px;
 	text-align:left;
