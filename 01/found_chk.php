@@ -6,11 +6,11 @@
 	$name = $_GET['foundname'];
 	$question = $_GET['question'];
 	$answer = $_GET['answer'];
-	$sql = "select email from tb_member where name = '".$name."' and question = '".$question."' and answer = '".$answer."'";
+	$sql = "select email from reg_users where name = '".$name."' and question = '".$question."' and answer = '".$answer."'";
 	$email = $conne->getFields($sql,0);
 	if($email != ''){
 		$rnd = rand(1000,time());
-		$sql = "update tb_member set password = '".md5($rnd)."' where name = '".$name."' and question = '".$question."' and answer = '".$answer."'";
+		$sql = "update reg_users set password = '".md5($rnd)."' where name = '".$name."' and question = '".$question."' and answer = '".$answer."'";
 		$tmpnum = $conne->uidRst($sql);
 		if($tmpnum >= 1){
 			//ทขหอรÜย๋ำสผþ

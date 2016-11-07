@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>用户登录</title>
+<title>Login page</title>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
 <script language="javascript" src="js/login.js"></script>
 <script language="javascript" src="js/xmlhttprequest.js"></script>
 </head>
 <body>
-aaaaaaaaaaaaaaaaaaaaaaaa
+Welcome!
 </body>
 </html>

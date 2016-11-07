@@ -5,7 +5,7 @@ include_once 'conn/conn.php';
 $name = addslashes($_GET['name']);
 $pwd = $_GET['pwd'];
 if(!empty($name) and !empty($pwd)){
-	$sql = "select name,count,active from tb_member where name = '".$name."'";
+	$sql = "select name,count,active from reg_users where name = '".$name."'";
 	$active = $conne->getFields($sql,2);
 	$count = $conne->getFields($sql,1);
 	$conne->close_rst();
@@ -24,11 +24,11 @@ if(!empty($name) and !empty($pwd)){
 		$sql .= " and password = '".md5($pwd)."'";
 		$num = $conne->getRowsNum($sql);
 		if($num == 0 or $num == ''){
-			$num = $conne->uidRst("update tb_member set count = ".($count+1)." where name = '".$name."'");
+			$num = $conne->uidRst("update reg_users set count = ".($count+1)." where name = '".$name."'");
 			$reback = ($count+1);
 		}else{
 			if($count != 0){
-				$num = $conne->uidRst("update tb_member set count = 0 where name = '".$name."'");
+				$num = $conne->uidRst("update reg_users set count = 0 where name = '".$name."'");
 			}
 			if(isset($_COOKIE['count']) and $_COOKIE['count'] != 0){
 				setcookie('count',0);

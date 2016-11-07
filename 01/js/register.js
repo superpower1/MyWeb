@@ -125,10 +125,10 @@ window.onload = function(){
 	//Register button
 	$('regbtn').onclick = function(){
 		$('imgdiv').style.visibility = 'visible';
-		url = 'register_chk.php?name='+$('regname').value+'&pwd='+$('regpwd1').value+'&email='+$('email').value;
+		url = 'register_check.php?name='+$('regname').value+'&pwd='+$('regpwd1').value+'&email='+$('email').value;
 		url += '&question=' +$('question').value+'&answer='+$('answer').value;
 		url += '&realname=' +$('realname').value+'&birthday='+$('birthday').value;
-		url += '&telephone='+$('telephone').value+'&qq='+$('qq').value;
+		url += '&telephone='+$('telephone').value;
 		xmlhttp.open('get',url,true);
 		xmlhttp.onreadystatechange = function(){
 			if(xmlhttp.readyState == 4){

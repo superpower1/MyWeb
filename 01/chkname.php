@@ -1,6 +1,6 @@
 <?php
 include_once "conn/conn.php";
-$sql = "select * from tb_member where name='".$_GET['name']."'";
+$sql = "select * from reg_users where name='".$_GET['name']."'";
 $num = $conne->getRowsNum($sql);
 if($num == 1){
 	echo '2';

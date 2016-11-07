@@ -24,33 +24,33 @@ window.onload = function(){
 	$('lgbtn').onclick = chklg;
 	function chklg(){
 		if($('lgname').value.match(/^[a-zA-Z_]\w*$/) == null){
-			alert('请输入合法名称');
+			alert('Please enter a eligible user name!');
 			$('lgname').select();
 			return false;
 		}
 		if($('lgname').value == ''){
-			alert('请输入用户名!');
+			alert('Please enter a user name!');
 			$('lgname').focus();
 			return false;
 		}
 		if($('lgpwd').value == ''){
-			alert('请输入密码!');
+			alert('Please enter your password!');
 			$('lgpwd').focus();
 			return false;
 		}
 		if($('lgchk').value == ''){
-			alert('请输入验证码');
+			alert('Please enter the valcode!');
 			$('lgchk').select();
 			return false;
 		}
 		if($('lgchk').value != $('chknm').value){
-			alert('验证码输入错误');
+			alert('Wrong valcode!');
 			$('lgchk').select();
 			return false;
 		}
 		count = document.cookie.split(';')[0];
 		if(count.split('=')[1] >= 3){
-			alert('因为您的非法操作，您将无法再执行登录操作');
+			alert('You have been blocked for entering wrong password more than 3 times.');
 			return false;
 		}
 		$('regimg').style.visibility = "visible";
@@ -62,21 +62,21 @@ window.onload = function(){
 				if(xmlhttp.status == 200){
 					msg = xmlhttp.responseText;
 					if(msg == '0'){
-						alert('您还没有激活，请先登录邮箱进行激活操作。');
+						alert('You have not activate your user name yet, please check your email!');
 					}else if(msg == '1'){
-						alert('用户名或密码输入错误，您还有2次机会');
+						alert('Wrong user name or password, you can try no more than 2 times.');
 						$('lgpwd').select();
 					}else if(msg == '2'){
-						alert('用户名或密码输入错误，您还有1次机会');
+						alert('Wrong user name or password, you have 1 chance left.');
 						$('lgpwd').select();
 					}else if(msg == '3'){
-						alert('因为登录次数过多，您的帐号已被冻结，请联系管理员');
+						alert('You have entered the wrong password for more than 3 times. User name frozen.');
 						$('lgname').select();
 					}else if(msg == '4'){
-						alert('用户名输入错误');
+						alert('Wrong user name!');
 						$('lgname').select();
 					}else if(msg == '-1'){
-						alert('登录成功');
+						alert('Successfully login!');
 						location = 'main.php';
 					}else{
 						alert(msg);
