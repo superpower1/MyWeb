@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		// javascript中没有块级作用域
+		for (var i = 0; i < 2; i++) {
+			var num = i;
+		}
+		// 在块外都可以正常输出
+		console.log(i);
+		console.log(num);
+
+		// js中唯一能产生作用域的是函数
+		function test() {
+			var a = 1;
+
+		}
+		// 不能正常输出
+		// console.log(a);
+
+		var a = 123;
+		function printA() {
+			console.log(a);
+		}
+		function func() {
+			var a = 456;
+			// 这里会输出123而不是456,调用printA函数会先在自己的作用域找a，如果找不到会去全局找，而不会去func里找，因为这两个函数是平级的
+			printA();
+		}
+		func();
+
+		// js在预处理的时候会把函数提到前面，遇到同名函数后写的会覆盖前面的
+
+		// 执行顺序
+		function Person() {
+
+		}
+		// 以下两句没有区别
+		// var p = new Person;
+		// var p = new Person();
+		// 以下两句是有区别的，new Person.getName()会先执行Person.getName()再执行new，而new Person().getName()会先执行new Person()再执行Person().getName()
+		// new Person.getName();
+		// new Person().getName();
+
+		// 当函数和变量名重名的时候只提升函数
+		// 函数表达式中的函数的声明不会被提升，只会提升变量
+		// 条件式函数的声明是否会被提升取决于浏览器,chrome不行，标准规定不行，不推荐这样写
+		text(); // 这里会报错因为没被提升
+		if(true) {
+			function text () {
+				console.log('test');
+			}
+		}
+	</script>
+</body>
+</html>

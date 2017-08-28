@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.container {
+			width: 400px;
+			height: 600px;
+			
+			margin: 0 auto;
+		}
+		.log {
+			width: 100%;
+			height: 570px;
+			background-color: skyblue;
+		}
+		.inputArea {
+			width: 100%;
+			height: 30px;
+			background-color: #ccc;
+			margin: 0;
+			padding: 0;
+			line-height: 30px;
+			position:relative;
+		}
+		input{
+			margin: 0; 
+			padding: 0; 
+			position:absolute;
+			top:50%;
+			left: 2%;
+			margin-top: -10px;
+			
+		}
+		.sendTxt {
+			width: 65%;
+			height: 20px;
+			/*border: 0;*/
+			box-sizing:border-box;
+			display:inline-block;
+
+		}
+		.sendBtn {
+			width: 30%;
+			height: 20px;
+			/*border: 0;*/
+			display:inline-block;
+			box-sizing:border-box;
+			left:auto;
+			right:2%;
+		}
+		.myMsg {
+			background-color: pink;
+		}
+		.reMsg {
+			background-color: lightgrey;
+			text-align: right;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="log">
+			
+		</div>
+		<div class="inputArea">
+			<input type="text" class="sendTxt">
+			<input type="button" class="sendBtn" value="send">
+		</div>
+	</div>
+
+	<script src="javascript/ajax.js"></script>
+	<script>
+		var sendBtn = document.querySelector('.sendBtn');
+		var sendTxt = document.querySelector(".sendTxt");
+		sendBtn.onclick = function () {
+			var newdiv = document.createElement('div');
+			newdiv.innerHTML = sendTxt.value;
+			newdiv.classList.add('myMsg');
+			document.querySelector('.log').appendChild(newdiv);
+
+			var sendMsg = "25-chatBot.php?msg="+sendTxt.value;
+			ajax_tool({
+				"url": sendMsg,
+				"method": "get",
+				"data": undefined,
+				"func": function(data) {
+					console.log(data);
+					var newReMsg = document.createElement('div');
+					newReMsg.innerHTML = data;
+					newReMsg.classList.add('reMsg');
+					document.querySelector('.log').appendChild(newReMsg);
+				}
+			});
+		}
+	</script>
+</body>
+</html>

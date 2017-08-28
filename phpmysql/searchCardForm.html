@@ -3,11 +3,14 @@
     <title>Finding Card</title>
 </head>
 <body>
-    <h2>Finding card from veda database.</h2>
+    <h>Finding card from veda database.</h>
     <form action="searchCardformhandler.php" method="post">
         Fill card id:
         <input name="cardID" type="int" size="20"/> <br />
         <input name="submit" type="submit" value="Find"/>
+    </form>
+    <form action="showAllcards.php" method="post">
+        <input name="showAll" type="submit" value="Show all cards!"/>
     </form>
 </body>
 </html>

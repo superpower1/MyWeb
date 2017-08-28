@@ -4,20 +4,25 @@
 </head>
 <body>
 <h2>Card found from veda database.</h2>
+
 <?php
 @ $cardID = $_POST['cardID'];
 
 if(!$cardID){
-    showAllcards();
-    //exit;
+    //showAllcards();
+    exit;
 }
 
 if(!get_magic_quotes_gpc()){
     $cardID = addslashes($cardID);
 }
 
+$server = "localhost";
+$username = "sp1";
+$password = "superpower1";
+
 try{
-    $dbconnect = new PDO('mysql:host=localhost;dbname=veda', 'sp1', 'superpower1');
+    $dbconnect = new PDO('mysql:$server;dbname=veda', $username, $password);
 }catch(PDOException $exception){
     echo "Connection error message: ".$exception->getMessage();
 }
@@ -36,7 +41,7 @@ foreach($result as $row){
 
 function showAllcards(){
     try{
-        $dbconnect = new PDO('mysql:host=localhost;dbname=veda', 'sp1', 'superpower1');
+        $dbconnect = new PDO('mysql:host=$server;dbname=veda', $username, $password);
     }catch(PDOException $exception){
         echo "Connection error message: ".$exception->getMessage();
     }

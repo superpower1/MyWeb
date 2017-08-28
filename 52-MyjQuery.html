@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<!-- <script src="javascript/jquery.min.js"></script> -->
+</head>
+<body>
+	<span>sp1</span>
+	<div class="a ab aabb abc abcba">
+		<li class="ab abc">1</li>
+		<li class="abcba a">2</li>
+	</div>
+	<a href="">我是a标签</a>
+
+	<script>
+		// $和jQuery实际上是一个工厂函数，返回一个jq对象，这个对象是一个伪数组
+		// 以下是jq的基本结构
+		(function(w){
+
+			var version = '1.0.0';
+
+			// 对外暴露的工厂函数
+			function jQuery(selector) {
+				return new jQuery.fn.init(selector);
+			}
+
+			// 给原型提供一个简写方式
+			jQuery.fn = jQuery.prototype = {
+				
+				constructor: jQuery,
+
+				jquery: version,
+
+				// 默认选择器，代表实例是个jq类型的对象
+				selector: '',
+
+				// 默认长度
+				length: 0,
+
+				// 把实例转化为数组返回
+				toArray: function() {
+					return [].slice.call(this);
+				},
+
+				// 获取指定下标的元素，返回原生DOM对象
+				get: function(index) {
+					if (!index) {
+						return this.toArray();
+					} 
+					else if (index >= 0) {
+						return this[index];
+					}
+					// 如果index是负数，则返回从后往前数的第index个
+					else{
+						return this[this.length + index];
+					}
+				},
+
+				// 遍历实例
+				each: function(fn) {
+					return jQuery.each(this, fn);
+				},
+
+				// 通过实例得到一个新数组
+				map: function(fn) {
+					return jQuery.map(this, fn);
+				},
+
+				// slice方法可以截取实例的部分元素再封装成新的jq对象返回
+				slice: function() {
+					// slice方法参数不一定，用arguments
+					var nodes = [].slice.apply(this, arguments);
+					return jQuery(nodes);
+				},
+
+				// 获取指定下标的元素，返回jq对象
+				eq: function(index) {
+					if (!index) {
+						return jQuery();
+					}
+					else {
+						return jQuery(this.get(index));
+					}
+				},
+
+				// 返回第一个元素封装成的jq对象
+				first: function() {
+					return this.eq(0);
+				},
+				// 返回最后一个元素封装成的jq对象
+				last: function() {
+					return this.eq(-1);
+				},
+
+				// 实例在调用以下方法的时候，this就指向实例本身，所以这里不需要使用call或者apply改变this的指向
+				push: [].push,
+				sort: [].sort,
+				splice: [].splice,
+			};
+
+			// jQuery.extend是给jq工厂函数添加静态方法，而jQuery.fn.extend是给jq实例的原型添加方法，方法描述虽然是相同的，但是this的指向不一样
+			jQuery.extend = jQuery.fn.extend = function() {
+				// 如果只有一个参数，则给调用的对象混入内容
+				var target = arguments[0];
+				if (arguments.length === 1) {
+
+					target = this;
+
+					for (var key in arguments[0]) {
+						this[key] = arguments[0][key];
+					}
+				}
+				// 如果有多个参数，则把后面的对象的内容混入第一个对象中
+				else if(arguments.length >= 2){
+					// 遍历后面传入的每一个对象
+					for (var i = 1; i < arguments.length; i++) {
+						// 遍历每一个对象中的每一个属性
+						for(var key in arguments[i]){
+							target[key] = arguments[i][key];
+						}
+					}
+				}
+
+				return target;
+				
+			};
+
+			jQuery.extend({
+					// each方法将obj中的每一个元素作为参数传入fn
+					each: function(obj, fn) {
+						// 如果obj是数组或者伪数组则使用i来遍历
+						if (jQuery.isArrayLike(obj)) {
+							for (var i = 0; i < obj.length; i++) {
+								// fn(i, obj[i]);
+								// 改变this的指向，使其指向当前传入的obj,不然在回调函数中this会指向window
+								// fn.call(obj[i], i, obj[i]);
+								// 如果回调函数传回false的话，终止遍历，这是为了让用户可以随时终止each
+								if (fn.call(obj[i], i, obj[i]) === false) {
+									break;
+								}
+							}
+						}
+						// 如果不是就使用for in来遍历 
+						else {
+							for (var key in obj) {							
+								// fn(key, obj[key]);
+								if (fn.call(obj[key], key, obj[key]) === false) {
+									break;
+								}
+							}
+						}
+					},
+
+					// 把obj中的每一项传入fn，之后将每次的返回值构成新数组返回
+					map: function(obj, fn) {
+						// 如果是数组或伪数组，则用for来循环
+						var newObj = [];
+						if (jQuery.isArrayLike(obj)) {
+							for (var i = 0; i < obj.length; i++) {
+								newObj.push(fn.call(obj[i], obj[i], i));
+							}
+						} 
+						// 如果不是数组或伪数组,则用forin来循环
+						else {
+							for (var key in obj) {
+								newObj.push(fn.call(obj[key], obj[key], key));
+							}
+						}
+						return newObj;
+					},
+
+					isString: function(string) {
+						if (typeof string === 'string') {
+							return true;
+						} else {
+							return false;
+						}
+					},
+
+					isHTML: function(string) {
+						// 判断字符串是不是html：
+						// 规则是字符串的第一个字符是不是'<'，最后一个字符是不是'>'，而且字符串长度大于3
+						if(!string) {
+							return false;
+						}
+						if (string.charAt(0) == '<' 
+							&& string.charAt(string.length-1) == '>'
+							&& string.length >= 3) {
+							return true;
+						}
+						return false;
+					},
+
+					// 为了兼容性考虑自己封装trim方法
+					trim: function(str) {
+						// 不是字符串不处理
+						if (typeof str !== 'string') {
+							return str;
+						}
+						// 如果有trim方法直接使用
+						if(str.trim) {
+							return str.trim();
+						}
+						// 用正则把首尾的空白字符替换为空
+						return str.replace(/^\s+|\s+$/g, '');
+					},
+
+					isFunction: function(fn) {
+						if (!fn) {
+							return false;
+						}
+						if (typeof fn === 'function') {
+							return true;
+						}
+						return false;
+						
+					},
+
+					isWindow: function(win) {
+						if (!win) {
+							return false;
+						}
+						if (win.window === win) {
+							return true;
+						} 
+						return false;
+						
+					},
+
+					isObject: function(obj) {
+						// 防止typeof对null的误判，要先过滤
+						if(obj === null) {
+							return false;
+						}
+						if(typeof obj === 'object'|| typeof obj === 'function') {
+							return true;
+						}
+						return false;
+					},
+
+					isArrayLike: function(arr) {
+						/* 
+						* 1. 真数组是由new Array或者[]创建出来的
+						* 2. 伪数组必须要有length属性，除非length为0，否则必须有length-1为下标的属性
+						* 注：伪数组不可能是稀疏数组
+						*/
+
+						// 过滤掉函数和window以及非对象的其他数据
+						if (jQuery.isFunction(arr)||jQuery.isWindow(arr)||(!jQuery.isObject(arr))) {
+							return false;
+						} 
+						// 判断是不是真数组
+						if (({}).toString.call(arr) == '[object Array]') {
+							return true;
+						}
+						// 判断是不是伪数组
+						if (('length' in arr) && ((arr.length === 0) || (arr.length-1 in arr))) {
+							return true;
+						} 
+
+						return false;
+
+					},
+
+					ready: function(fn) {
+						// 这个函数用来判断DOM元素是否加载完毕，防止出现未加载完元素的时候执行方法导致找不到元素而报错，使得jq可以在html的任何位置使用
+
+						// 如果已加载完毕，直接执行
+						if (document.readyState === 'complete') {
+							fn();
+						}
+
+						// 由于ie8之前版本的ie不支持addEventListener，所以要分开处理
+						// DOMContentLoaded事件要比window的onload事件先触发，以此来判断可以加快速度
+						else if (document.addEventListener) {
+							document.addEventListener('DOMContentLoaded', fn);
+						}
+
+						// ie8及以下的处理方式
+						// 这里使用onreadystatechange事件是为了防止这个事件多次触发导致fn多次执行
+						else {
+							document.attachEvent('onreadystatechange', function() {
+								if (document.readyState === 'complete') {
+									fn();
+								}
+							});
+						}
+					},
+				});
+
+			// init是jq中真正的构造函数 ==> 入口函数
+
+			/* jq处理传入的变量：
+			* 1. 传入的是null，undefined，0，NaN，‘’的时候返回空jq对象
+			* 2. 传入的是function的情况要先判断DOM元素是否加载完毕再执行这个函数
+			* 3. 传入字符串，需要判断是否是html片段
+			* 	a. 如果是html片段，则创建DOM对象，并添加到jq对象上
+			*   b. 如果不是则判断为选择器，并以此获取页面中的对应DOM对象，并添加到jq对象上
+			* 4. 如果是数组或者伪数组，则分别把每一项添加到jq对象上
+			* 5. 除此之外的所有其他数据类型统一添加到jq对象上
+			*/
+
+			// 根据以上规则自己封装jq的init入口函数：
+			var init = jQuery.fn.init = function(selector) {
+				// 规则1
+				if (!selector) {
+					return this;
+				}
+				// 规则2
+				else if (jQuery.isFunction(selector)) {
+					jQuery.ready(selector);
+				}
+				// 规则3
+				else if (typeof selector == 'string') {
+					// 去掉首尾用户误输入的空格
+					selector = jQuery.trim(selector);
+
+					// 规则3.a
+					if (jQuery.isHTML(selector)) {
+						// 如果是html，则把字符串作为innerHTML加入临时的div中，再将每一项读出来
+						var temp = document.createElement('div');
+						temp.innerHTML = selector;
+						// 借用数组的push方法将临时div中的每一个元素放入创建出来的jq对象里
+						[].push.apply(this, temp.childNodes); 
+						return this;
+					}
+					// 规则3.b 
+					else {
+						// 如果将不是标签的字符串作为querySelectorAll()的参数传入的话会报错，为了不让它报错，这里要处理抛出的异常
+						try{
+							var nodes = document.querySelectorAll(selector);
+							// 同样是借用push方法将符合的元素依次放入新创建的jq对象里
+							[].push.apply(this, nodes);
+							return this;
+						}
+						catch(e){
+							this.length = 0;
+							return this;
+						}
+				
+					}
+				}
+				// 规则4
+				else if (jQuery.isArrayLike(selector)) {
+					// 因为ie8之前的ie不支持将伪数组作为apply的参数，所以为了兼容性考虑，这里对伪数组使用数组的slice方法，将其转化为真数组
+					[].push.apply(this, [].slice.call(selector));
+					return this;
+				}
+				// 规则5
+				else {
+					this[0] = selector;
+					this.length = 1;
+					return this;
+				}
+			}
+
+			// 替换构造函数的原型为jq工厂的原型
+			// 这是为了实现插件机制，让外界可以通过jQuery.fn扩充方法
+			init.prototype = jQuery.fn;
+
+			w.jQuery = w.$ = jQuery;
+
+		}(window));	
+
+		// jq插件的实现原理，就是给jq原型添加方法
+		// jQuery.fn.alert = function(msg) {
+		// 	alert(msg);
+		// }
+
+		// var jQobj = $();
+		// jQobj.alert('我是自定义的jq弹出框插件');		
+
+		// 测试init，传入html片段
+		// var testObj = $('<span>span</span>');
+		// document.body.appendChild(testObj[0]);
+
+		// 测试init，传入标签(前后有误输入的空格)
+		// var testObj2 = $('   a ');
+		// testObj2[0].innerHTML = 'a';
+		// document.body.appendChild(testObj2[0]);
+
+		// 测试init，传入数组
+		// var testObj3 = $([1,2,,4,5]);
+		// console.log(testObj3);
+
+		// 测试init，传入函数
+		// $(function() {
+		// 	console.log($('a'));
+		// });
+
+		// 测试each
+		// var arr = [1,2,3,4];
+		// $.each(arr, function(i, val) {
+		// 	console.log(this);
+		// 	if (i>=0) {return false;}
+		// });
+
+		// 测试map
+		// var arr2 = $.map(arr, function(val, i) {
+		// 	return val = i*3;
+		// });
+		// console.log(arr2);
+
+	</script>
+
+	<script>
+		// 添加jq的静态方法
+		$.extend({
+
+			getStyle: function(dom, style) {
+				// 因为ie8以下的ie不支持getComputedStyle，所以要分开考虑
+				if (window.getComputedStyle) {
+					// dom指的是DOM元素
+					return getComputedStyle(dom)[style];
+				} else {
+					return dom.currentStyle[style];
+				}
+			},
+
+			addEvent: function(ele, type, fn) {
+				// 通过判断有没有nodeType判断一下ele是不是DOM元素
+				// 如果ele不是DOM元素，或者type不是字符串，又或者fn不是函数，则直接返回不处理
+				if (!ele.nodeType || !jQuery.isString(type) || !jQuery.isFunction(fn)) {
+					return;
+				} else {
+					// 如果支持addEventListener则直接使用
+					if (ele.addEventListener) {
+						ele.addEventListener(type, fn);
+					} else {
+						// 如果不支持说明是ie8之前的ie，所以使用attachEvent
+						ele.attachEvent('on'+type, fn);
+					}
+				}
+			},
+
+			removeEvent: function(ele, type, fn) {
+
+				if (!ele.nodeType || !jQuery.isString(type) || !jQuery.isFunction(fn)) {
+					return;
+				} else {
+					// 如果支持removeEventListener则直接使用
+					if (ele.removeEventListener) {
+						ele.removeEventListener(type, fn);
+					} else { 
+						// 如果不支持说明是ie8之前的ie，所以使用detachEvent
+						ele.detachEvent('on'+type, fn);
+					}
+				}
+			},
+		});
+	</script>
+
+	<script>
+	// 使用extend给jq原型扩展DOM操作的方法，这样jq实例就可以使用这些方法了
+		$.fn.extend({
+
+			empty: function () {
+				// 这里的this指向jq
+				this.each(function() {
+					// 这里的this指向每个遍历的元素
+					this.innerHTML = '';
+				});
+				// 为了可以链式编程，这里返回this指向操作的jq对象
+				return this;
+			},
+			
+			remove: function () {
+				this.each(function() {
+					this.parentNode.removeChild(this);
+				});
+
+				return this;
+			},
+		
+			html: function (html) {
+				if (arguments.length === 0) {
+					return this.get(0).innerHTML;
+				}
+				else {
+					this.each(function() {
+						this.innerHTML = html;
+					});
+				}
+				return this;
+			},
+
+			text: function (text) {
+				var tmp = '';
+				if (arguments.length === 0) {
+					this.each(function() {
+						tmp += this.innerText;
+					});
+
+					return tmp;
+				}
+				else {
+					this.each(function() {
+						this.innerText = text;
+					});
+
+				}
+				return this;
+			},
+
+			appendTo: function (selector) {
+				/* 实现：
+				* 1. 定义一个新数组用来储存要被添加的元素
+				* 2. 使用$()包装所有的selector，这样就可以将不同参数（字符串，DOM元素，jq对象）统一转化为jq对象
+				* 3. 在外层遍历所有元素（this）
+				* 4. 在内层遍历所有目标（包装后的jq对象）
+				* 5. 在内层进行判断，如果是第一次添加，则把外层遍历到的元素本身添加到内层遍历到的jq对象。否则，把外层遍历到的元素进行clone之后添加
+				* 6. 把新数组包装成jq对象返回
+				*/
+
+				var result = [];
+				var $selector = $(selector);
+				// 定义一个临时的值储存克隆出来的元素
+				var tmpNode = null;
+				
+				for (var i = 0; i < this.length; i++) {
+					for (var j = 0; j < $selector.length; j++) {
+						// 如果是第一次添加，则把外层遍历到的元素本身添加到内层遍历到的jq对象
+						if (j===0) {
+							$selector[j].appendChild(this[i]);
+							result.push(this[i]);
+						}
+						// 否则，把外层遍历到的元素进行深度clone之后添加 
+						else {
+							// 这里必须存储克隆出来的元素，否则在push的时候再次克隆的话是一个新的克隆体
+							tmpNode = this[i].cloneNode(true);
+							$selector[j].appendChild(tmpNode);
+							result.push(tmpNode);
+						}
+						
+					}
+				}
+				// 把新数组包装成jq对象返回
+				return jQuery(result);
+			},
+
+			prependTo: function (selector) {
+				/* 实现：
+				* 1. 定义一个新数组用来储存要被添加的元素
+				* 2. 使用$()包装所有的selector，这样就可以将不同参数（字符串，DOM元素，jq对象）统一转化为jq对象
+				* 3. 在外层遍历所有元素（this）
+				* 4. 在内层遍历所有目标（包装后的jq对象）
+				* 5. 在内层进行判断，如果是第一次添加，则把外层遍历到的元素本身添加到内层遍历到的jq对象的最前面。否则，把外层遍历到的元素进行clone之后添加到内层遍历到的jq对象的最前面
+				* 6. 把新数组包装成jq对象返回
+				*/
+
+				var result = [];
+				var $selector = $(selector);
+				// 定义一个临时的值储存克隆出来的元素
+				var tmpNode = null;
+				
+				// for (var i = 0; i < this.length; i++) {
+				// 	for (var j = 0; j < $selector.length; j++) {
+				// 		if (j===0) {
+				// 			$selector[j].insertBefore(this[i], $selector[j].firstChild);
+				// 			result.push(this[i]);
+				// 		}
+				// 		else {
+				// 			tmpNode = this[i].cloneNode(true);
+				// 			$selector[j].insertBefore(tmpNode, $selector[j].firstChild);
+				// 			result.push(tmpNode);
+				// 		}
+						
+				// 	}
+				// }
+
+				// each版本
+				this.each(function() {
+					// 这里的this指向每一个被添加的元素
+					var self = this;
+
+					$selector.each(function(i) {
+						// 在内层进行判断，如果是第一次添加，则把外层遍历到的元素本身添加到内层遍历到的jq对象的最前面。否则，把外层遍历到的元素进行clone之后添加到内层遍历到的jq对象的最前面
+						tmpNode = i === 0 ? self : self.cloneNode(true);
+
+						// 这里的this指向每一个被添加的元素（目标）
+						this.insertBefore(tmpNode, this.firstChild);
+
+						result.push(tmpNode);
+					});
+
+				});
+
+				return jQuery(result);
+			},
+
+			append: function(context) {
+
+				var $context = jQuery(context);
+				// 1. context如果是字符串，则直接在目标元素的innerHTML加上传入的字符串
+				if (jQuery.isString(context)) {
+					for (var i = 0; i < this.length; i++) {
+						this[i].innerHTML += context;
+					}
+				} 
+				// 2. 否则把对象的每一项分别添加到所有的目标元素中
+				else {
+					// 利用appendTo，a.appendTo(b)等效于b.append(a)
+					$context.appendTo(this);
+				}
+
+				return this;
+			},
+
+			prepend: function(context) {
+
+				var $context = jQuery(context);
+
+				if (jQuery.isString(context)) {
+					// 这里的this指向调用者
+					this.each(function() {
+						// 这里的this指向遍历到的每一个元素
+						// prepend加到前面
+						this.innerHTML = context + this.innerHTML;
+					});
+				} 
+
+				else {
+
+					$context.prependTo(this);
+				}
+
+				return this;
+			},
+
+			attr: function(attr, val) {
+				// 1. 参数如果不是字符串或对象的话，不作处理返回
+				if (!jQuery.isString(attr) && !jQuery.isObject(attr)) {
+					return this;
+				} 
+				// 2. 如果第一个参数是字符串的话，看参数的个数
+				if (jQuery.isString(attr)) {
+					// 2.a 如果只有一个参数，说明是要获取值，所以返回有其属性节点的第一个元素的属性节点值
+					if (arguments.length === 1) {
+						return this.get(0).getAttribute(attr);
+					} 
+					// 2.b 否则说明要修改属性节点值，所以遍历所有有其属性节点的元素，修改其属性节点值
+					else {
+						for (var i = 0; i < this.length; i++) {
+							this[i].setAttribute(attr, val);
+						}
+					}
+				}
+				// 3. 如果第一个参数是对象的话，双层遍历，将对象中的每一项作为一个属性节点添加到每一个元素中
+				if (jQuery.isObject(attr)) {
+					for (var key in attr) {
+						for (var i = 0; i < this.length; i++) {
+							this[i].setAttribute(key, attr[key]);
+						}
+					}
+				}
+
+				return this;
+			},
+
+			// 注意：prop设置的属性与attr设置的属性节点是不一样的
+
+			prop: function(attr, val) {
+				// 1. 参数如果不是字符串或对象的话，不作处理返回
+				if (!jQuery.isString(attr) && !jQuery.isObject(attr)) {
+					return this;
+				} 
+				// 2. 如果第一个参数是字符串的话，看参数的个数
+				if (jQuery.isString(attr)) {
+					// 2.a 如果只有一个参数，说明是要获取值，所以返回有其属性的第一个元素的属性值
+					if (arguments.length === 1) {
+						return this[0][attr];
+					} 
+					// 2.b 否则说明要修改属性值，所以遍历所有有其属性的元素，修改其属性值
+					else {
+						for (var i = 0; i < this.length; i++) {
+							this[i][attr] = val;
+						}
+					}
+				}
+				// 3. 如果第一个参数是对象的话，双层遍历，将对象中的每一项作为属性添加到每一个元素中
+				if (jQuery.isObject(attr)) {
+					for (var key in attr) {
+						for (var i = 0; i < this.length; i++) {
+							this[i][key] = attr[key];
+						}
+					}
+				}
+
+				return this;
+			},
+
+			css: function(styleName, style) {
+				// 1. 如果arguments.length===1，则判断styleName是不是字符串，如果是则获取第一个元素的样式
+				// 2. 否则判断styleName是不是对象，如果是则遍历这个对象得到所有样式的键值对分别设置给所有元素
+				// 3. 否则如果arguments.length>=2，遍历所有元素设置指定的样式
+				// 4. 返回this方便链式编程
+
+				if (arguments.length===1) {
+					if (jQuery.isString(styleName)) {
+						return jQuery.getStyle(this[0], styleName);
+					} 
+					else if (jQuery.isObject(styleName)) {
+						for (var key in styleName) {
+							for (var i = 0; i < this.length; i++) {
+								// 例如：$('div')[0].style.width = ...
+								this[i]['style'][key] = styleName[key];
+							}
+						}
+					}
+				}
+				else if (arguments.length>=2) {
+					for (var i = 0; i < this.length; i++) {
+						this[i]['style'][styleName] = style;
+					}
+				}
+
+				return this;
+
+			},
+
+			val: function(value) {
+				// 1. 如果arguments.length===0，则直接返回第一个元素的value属性值
+				// 2. 否则遍历所有元素，分别设置对应的value属性值
+				// 3. 返回this
+
+				if (arguments.length===0) {
+					// 利用实例的prop方法
+					return this.prop('value');
+				} else {
+					return this.prop('value', value);
+				}
+			},
+
+			hasClass: function(className) {
+				// 1. 遍历所有元素，依次取每个元素的className
+				// 2. 在className首尾加上空格，然后用indexOf方法判断有没有某个class（indexOf(' '+class+' ')）
+				// 3. 如果有一个元素的结果不为-1，则说明有这个class，返回true
+				// 4. 否则返回false
+
+				var tmp = '';
+				var result = false;
+
+				this.each(function() {
+					tmp = ' '+this.className+' ';
+					if (tmp.indexOf(' '+className+' ') !== -1) {
+						result = true;
+						// 找到第一个就可以中断循环了
+						return false;
+					}
+				});
+
+				return result;
+			},
+
+			addClass: function(className) {
+				// 1. 遍历所有元素，依次获取每一个元素的className
+				// 2. 判断className里有没有要添加的class，如果有忽略，没有则添加
+				// 3. 返回this
+
+				// 为了能处理用户传入多个class的情况，使用split将传入的className按照空格分割成数组，然后使用双层循环依次将每个className传入
+
+				// 需要先trim处理一下以防首尾空格影响split
+				var classArr = jQuery.trim(className).split(' ');
+				
+				for (var i = 0; i < classArr.length; i++) {
+
+					this.each(function() {
+						if (!jQuery(this).hasClass(classArr[i])) {
+							this.className += (' '+classArr[i]);
+						} 
+					});
+
+				}
+				return this;
+			},
+
+			removeClass: function(className) {
+				// 1. 判断有没有传参，如果没有遍历所有元素，将它们的className设置为空
+				// 2. 如果有传参，则遍历所有元素，依次获取每一个元素的className
+				// 3. 判断className里有没有要删除的class，如果没有则忽略，如果有则删除（replace(' '+className+' ',' ')）
+				// 4. 返回this
+
+				// 与addClass()一样，处理一下用户传入多个className的情况
+
+				var classArr = jQuery.trim(className).split(' ');
+
+				var tmp = '';
+
+				if (arguments.length === 0) {
+					this.each(function() {
+						this.className = '';
+					});
+				} 
+				else {
+					for (var i = 0; i < classArr.length; i++) {
+
+						this.each(function() {
+
+							tmp = ' '+this.className+' ';
+							this.className = jQuery.trim(tmp.replace(' '+classArr[i]+' ',' '));
+							
+						});
+					}
+				
+				}
+
+				return this;
+				
+			},
+
+			toggleClass: function(className) {
+				// 1. 遍历所有元素，依次获取每一个元素的className
+				// 2. 判断className里有没有对应的class，如果有则删除，没有则添加
+				// 3. 返回this
+
+				var classArr = jQuery.trim(className).split(' ');
+
+				for (var i = 0; i < classArr.length; i++) {
+
+					this.each(function() {
+						if (!jQuery(this).hasClass(classArr[i])) {
+							jQuery(this).addClass(classArr[i]);
+						} 
+						else {
+							jQuery(this).removeClass(classArr[i]);
+						}
+					});
+				}
+
+				return this;
+			},
+
+		});
+
+		// 测试appendTo
+		// $('span').appendTo('li').text('sp2');
+
+		// 测试append
+		// $('li').append('我是添加的字符串').append($('a'));
+
+		// 测试prependTo
+		// $('span').prependTo('li').text('sp2');
+
+		// 测试prepend
+		// $('li').prepend('我是添加的字符串').prepend($('a'));
+
+		// 测试prop
+		// $('li').prop({
+		// 	'a': 1,
+		// 	'b': 2,
+		// });
+
+		// 测试class相关
+		console.log($('div').hasClass('abc'));
+		$('li').addClass('abc bbc').removeClass('a abcba').toggleClass('abc ab');
+
+	</script>
+
+	<script>
+		// 给jq原型添加事件绑定和解绑方法
+		$.fn.extend({
+
+			on: function(type, fn) {
+				/*
+				* 实现：
+				* 1. 遍历所有元素，判断每一个元素有没有$_event_cache这个属性值
+				* 2. 如果有则使用，没有则初始化一个$_event_cache对象
+				* 3. 判断这个事件有没有对应事件类型的数组
+				* 4. 如果没有，则说明是第一次绑定该事件，给$_event_cache添加一个以type为key的数组，然后把传入的回调（fn）push进这个数组，然后绑定该事件
+				* 5. 如果有则把回调（fn）push进相应的数组
+				* 6. 返回this
+				*/
+
+				this.each(function() {
+					// 这里的this指向遍历到的每一个元素
+					var self = this;
+					// 判断有没有$_event_cache对象，如果没有初始化一个
+					this.$_event_cache = this.$_event_cache || {};
+					// 判断$_event_cache对象有没有相应的事件数组
+					if (!this.$_event_cache[type]) {
+						// 如果没有，创建一个
+						this.$_event_cache[type] = [];
+						// 把回调（fn）push进对应的数组
+						this.$_event_cache[type].push(fn);
+
+						jQuery.addEvent(this, type, function(e) {
+							// 这个方法用来遍历对应事件数组的所有绑定的回调
+							for (var i = 0; i < self.$_event_cache[type].length; i++) {
+								// 这里需要改变一下this的指向，使其指向该DOM元素，并且需要将事件对象作为参数传进去，某些回调可能会需要用到
+								self.$_event_cache[type][i].call(self, e);
+							}
+						});
+					} 
+					// 如果已经有对应的事件数组了，则说明已经绑定了该类型的事件，只需要将回调push进对应的数组就可以了
+					else {
+						this.$_event_cache[type].push(fn);
+						
+					}
+				});
+
+				return this;
+
+			},
+
+			off: function(type, fn) {
+				/*
+				* 实现：
+				* 1. 如果没有传参，则遍历所有元素中的$_event_cache对象，分别清除每个对象中的每一个数组
+				* 2. 如果只传了一个参数，那么把$_event_cache对象指定类型的数组清空
+				* 3. 如果传了两个以上的参数，那么把$_event_cache对象指定类型的数组中指定的回调函数删除
+				* 4. 返回this
+				*/
+
+				var argLen = arguments.length;
+
+				this.each(function() {
+					// 如果this.$_event_cache不存在，则直接跳过这个元素
+					if (!this.$_event_cache) {
+						return;
+					}
+					else {
+						// 如果没有传参，清除所有
+						if (argLen === 0) {
+							// （注意：不能直接清空$_event_cache对象，因为清空了之后再绑定事件的时候会根据$_event_cache对象有没有相应的数组判断是不是第一次绑定，所以会导致重复绑定）
+							// this.$_event_cache = {}; 这是错的
+							for(var key in this.$_event_cache){								
+								this.$_event_cache[key] = [];
+							}
+						} 
+						else if (argLen === 1) {
+							this.$_event_cache[type] = [];
+						}
+						else {
+							// 因为每次移除this.$_event_cache[type]中的fn时，其length都会变化，所以要从后往前遍历
+							for (var i = this.$_event_cache[type].length-1; i >= 0; i--) {
+								if (this.$_event_cache[type][i] === fn) {
+									this.$_event_cache[type].splice(i, 1);
+									
+								}
+							}
+						}
+					}
+				});
+
+				return this;
+			},
+
+		});
+
+		var events = "blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error contextmenu".split(' ');
+        // var events = "click focus".split(' ');
+
+        // 批量给原型添加事件，这些事件都复用了on方法，比如$('div').click(fn)实际上就是$('div').on('click', fn)
+        jQuery.each(events, function(i, eventName) {
+        	$.fn[eventName] = function(fn) {
+        		return this.on(eventName, fn);
+        	}
+        });
+
+		// 测试on
+		function $alert() {
+			alert('test');
+		}
+		// $('div').on('click', $alert);
+		// $('div').off('click', $alert);
+		// $('div').mouseleave($alert);
+
+	</script>
+
+	<script>
+	// 封装ajax静态方法
+		$.extend({
+
+			ajaxSettings: {
+				// 默认的url为本地地址
+				url: location.href, 
+				// 默认的请求方法是GET
+				type: "GET", 
+				// 默认是异步请求
+				async: true,
+				// POST发送数据时用于设置请求头
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				success: function(){},
+				error: function(){},
+				complete: function(){},
+				// 默认没有超时时间
+				timeout: null,
+				// 默认请求数据类型是JSON
+				dataType: 'JSON'
+			},
+
+			// 把对象转换为url参数形式的字符串
+			urlStringify: function(data) {
+				var result = '';
+				// 如果传入的不是对象则直接返回空字符串
+				if (!jQuery.isObject(data)) {
+					return result;
+				}
+
+				for(var key in data){
+					// 为了防止中文字符乱码，这里统一进行编码
+					var encodedKey = window.encodeURIComponent(key);
+					var encodedData = window.encodeURIComponent(data[key]);
+					result += encodedKey + '=' + encodedData + '&';
+				}
+				// 因为每一个参数后面都加了&，所以要删除最后的一个&
+				return result.slice(0, -1);
+			},
+		
+			processOptions: function(options) {
+				var newOptions = {};
+				// 处理ajax的options，合并默认的options和用户输入的options，生成newOptions
+				jQuery.extend(newOptions, jQuery.ajaxSettings, options);
+				// 处理用户输入的data
+				newOptions.data = jQuery.urlStringify(newOptions.data);
+				// 将type同义转换为大写，以防用户输入小写
+				newOptions.type = newOptions.type.toUpperCase();
+				// 如果是GET请求，把数据加到URL中
+				if (newOptions.type === 'GET') {
+					newOptions.url += '?' + newOptions.data;
+					newOptions.data = null;
+				}
+				// 返回加工后的newOptions
+				return newOptions;
+
+			},
+
+			ajax: function(options) {
+				// 处理用户输入的options
+				var newOps = jQuery.processOptions(options);
+				// 用于保存请求成功后返回的数据
+				var result;
+				// 为超时处理定义一个计时器
+				var timer;
+
+				// 创建ajax对象
+				var ajaxObj = new XMLHttpRequest();
+				// 设置ajax对象
+				ajaxObj.open(newOps.type, newOps.url, newOps.async);
+				// 如果是POST请求需要添加一个请求头
+				if (newOps.type === 'POST') {
+					ajaxObj.setRequestHeader('Content-Type', newOps.contentType);
+				}
+
+				ajaxObj.onreadystatechange = function() {
+					// 先判断请求是否完成，如果完成则执行complete方法
+					if (ajaxObj.readyState === 4) {
+						clearTimeout(timer);
+						newOps.complete();
+
+						// 再判断请求是否成功，如果成功则执行success方法，ajax.status在200到300之间为成功，304是从缓存中读取也算成功
+						if ((ajaxObj.status >= 200 && ajaxObj.status < 300) || ajaxObj.status === 304) {
+							// 根据dataType处理返回的数据
+							switch(newOps.dataType) {
+								case 'JSON':
+									result = JSON.parse(ajaxObj.responseText);
+									break;
+								case 'script':
+									result = ajaxObj.responseText;
+									// 将字符串转化为js代码并执行
+									eval(result);
+									break;
+								default:
+									result = ajaxObj.responseText;
+									break;
+							}
+							newOps.success(result);
+						} 
+						// 如果不成功则执行error方法
+						else {
+							newOps.error(ajaxObj.status);
+						}
+					}
+				};
+
+				// 如果用户设置了超时时间则打开定时器
+				if (newOps.timeout) {
+					timer = setTimeout(function() {
+						// 如果用户规定的时间内没有完成请求则执行error方法
+						newOps.error('TIME OUT');
+						// 因为error执行了所以没必要执行回调方法了，这里清空onreadystatechange方法
+						ajaxObj.onreadystatechange = null;
+
+					}, newOps.timeout);
+				}
+
+				// 发送ajax请求
+				ajaxObj.send(newOps.data);
+
+			},
+
+			// 以下方法是复用ajax方法的简化方法
+			get: function(url, data, fn) {
+				// 如果传入两个参数，则默认第二个参数为回调
+				fn = fn || data || function(){};
+				jQuery.ajax({
+					url: url,
+					data: data,
+					success: fn
+				});
+			},
+
+			post: function(url, data, fn) {
+		        fn = fn || data || function(){};
+		        jQuery.ajax({
+		            type: 'POST',
+		            url: url,
+		            data: data,
+		            success: fn
+		        });
+		    },
+
+		    // 加载JSON数据
+		    getJSON: function(url, data, fn) {
+		        fn = fn || data || function(){};
+		        jQuery.ajax({
+		            dataType: 'JSON',
+		            url: url,
+		            data: data,
+		            success: fn
+		        });
+		    },
+
+		    // 加载js脚本
+		    getScript: function(url, data, fn) {
+		        fn = fn || data || function(){};
+		        jQuery.ajax({
+		            dataType: 'script',
+		            url: url,
+		            data: data,
+		            success: fn
+		        });
+		    }, 
+
+		});
+
+		// 测试urlStringify
+		console.log(jQuery.urlStringify({
+			"name" : '三毛',
+			"age" : 19
+		}));
+
+		// 测试ajax
+		$.getJSON('json/myjson.json', function(result) {
+			console.log(result);
+		});
+
+	</script>
+
+	<a href="">我是在script下面的a标签</a>
+</body>
+</html>

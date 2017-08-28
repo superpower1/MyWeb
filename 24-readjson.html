@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		table {
+			border: 1px solid #000;
+		}
+		td {
+			border: 1px solid #000;
+		}
+	</style>
+</head>
+<body>
+	<table></table>
+	<button>get</button>
+	<script>
+		document.querySelector('button').onclick = function () {
+			var ajax = new XMLHttpRequest();
+			ajax.open('get','24-readjson.php');
+			ajax.send();
+			ajax.onreadystatechange = function () {
+				if(ajax.readyState==4 && ajax.status==200){
+					var origText = ajax.responseText;
+					// 将字符串转化为json对象
+					var jsonObj = JSON.parse(origText);
+					console.log(jsonObj);
+
+					// 拼接ul
+					var str = '';
+
+					for (var i = 0; i < jsonObj.length; i++) {
+						var person = jsonObj[i];
+						str += '<tr>';
+						for (var key in person) {
+							str += '<td>'+person[key]+'</td>';
+						}
+						str += '</tr>';
+					}
+	
+					document.querySelector('table').innerHTML = str;
+				}
+			}
+		}
+	</script>
+</body>
+</html>

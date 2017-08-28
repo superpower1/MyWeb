@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>practice10</title>
+	<style>
+
+	</style>
+</head>
+<body>
+	<div class="showtime">
+		
+	</div>
+	<div class="countdown">
+		
+	</div>
+	<input class="upload" type="file" name="">
+	<input class="button" type="button" value="click me!">
+
+	<script>
+		var date1 = new Date();
+		console.log(date1);
+		var date2 = new Date("1015/3/25 00:00:01");
+		console.log(date2.getDate()+" "+date2.getMonth()+" "+date2.getFullYear());
+		var timeBox = document.getElementsByClassName("showtime")[0];
+		setInterval(function(){time()}, 1000);
+		function time(){
+			var today = new Date();
+			timeBox.innerHTML = today;			
+		}
+		var countdown = document.getElementsByClassName("countdown")[0];
+		var endTime = new Date("2045/4/1 00:00:00");
+		setInterval(function(){cntdwnTime()}, 1000);
+		function cntdwnTime() {
+			var now = new Date();
+			var timeLeft = endTime.getTime() - now.getTime();
+			var year = parseInt(timeLeft/1000/60/60/24/365);
+			var day = parseInt(timeLeft/1000/60/60/24%365);
+			countdown.innerHTML = "距离宇宙世纪还有："+year+"年"+day+"天";
+		}
+
+		var upload = document.getElementsByClassName("upload")[0];
+		upload.onchange = function () {
+			var name = this.value;
+			var dotIndex = name.lastIndexOf(".");
+			var sliced = name.slice(dotIndex);
+			if ((sliced.toLowerCase()!=".docx")&&(sliced.toLowerCase()!=".doc")&&(sliced.toLowerCase()!=".pdf")) {
+				alert("Wrong file format! Please upload again!");
+				this.value = "";
+			}
+			
+		} 
+
+		//使用事件监听器防止层叠，更适合团队开发
+		var btn = document.getElementsByClassName("button")[0];
+		btn.addEventListener("click", fn1);
+		btn.addEventListener("click", fn2);
+		function fn1() {
+			console.log('test1');
+		}
+		function fn2() {
+			console.log('test2');
+		}
+		btn.removeEventListener("click", fn1);
+	</script>
+</body>
+</html>

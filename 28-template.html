@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<!-- 该模板引擎不依赖于jq -->
+	<script src="javascript/template-native.js"></script>
+
+	<!-- 准备模板 -->
+	<script type='text/template' id='template'>
+		<ul>
+			<li><%=name%></li>
+			<li><%=age%></li>
+			<ul>
+				<%for(var i=0; i< friends.length; i++){%>
+					<li><%=friends[i]%></li>
+				<%}%>
+			</ul>
+			<ul>
+				<%for(var i=0; i< brothers.length; i++){%>
+					<li><%=brothers[i].name%></li>
+					<li><%=brothers[i].skill%></li>
+				<%}%>
+			</ul>
+		</ul>
+	</script>
+
+	<script>
+		// 对象
+		var obj = {
+			name: 'sp1',
+			age: 28,
+			friends:['anderson','smith','joker'],
+			brothers:[
+				{
+					name: 'sp2',
+					skill: 'kill'
+				},
+				{
+					name: 'sp3',
+					skill: 'slaughter'
+				}
+			]
+		}
+
+		// 调用模板引擎的方法
+		var str = template('template',obj);
+
+		console.log(str);
+
+		// 添加到界面上
+		document.body.innerHTML = str;
+	</script>
+</body>
+</html>

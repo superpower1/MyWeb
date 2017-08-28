@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="libs/angular-1.2.32/angular.min.js"></script>
+</head>
+<body ng-app='myApp'>
+	<ul ng-controller='$locationService'>
+		<li>{{absUrl}}</li>
+		<li>{{host}}</li>
+		<li>{{url}}</li>
+		<li>{{search}}</li>
+		<li>{{port}}</li>
+	</ul>
+
+	<div ng-controller='$httpService'>
+		<table>
+			<tr>
+				<td>Name</td>
+				<td>Age</td>
+				<td>Gender</td>
+				<td>Avatar</td>
+			</tr>
+			<tr ng-repeat='val in table'>
+				<td>{{val.name}}</td>
+				<td>{{val.age}}</td>
+				<td>{{val.gender}}</td>
+				<td><img ng-src="{{val.pic}}" alt=""></td>
+			</tr>
+		</table>
+	</div>
+
+	<script>
+		var myApp = angular.module('myApp', []);
+		myApp.controller('$locationService', ['$scope', '$location', function($scope, $location) {
+			// $location服务本质上是angular内建的一个对象，是js中的location对象的封装，可以获取url地址
+
+			/* url地址的组成：http://www.baidu.com#/abc?name=sp1&age=10
+				1. http:// 协议
+				2. baidu.com 主机名
+				3. :80 端口号（默认80被省略）
+				4. #abc 锚点
+				5. ?name=sp1&age=10 查询参数
+			*/
+
+			// 当前页面的url地址
+			$scope.absUrl = $location.absUrl();
+			// 获取主机名
+			$scope.host = $location.host();
+			// 获取锚点后的数据
+			$scope.url = $location.url();
+			// 以对象的方式保存?后的内容
+			$scope.search = $location.search();
+			// 获取端口号
+			$scope.port = $location.port();
+
+		}]);
+
+		myApp.controller('$httpService', ['$scope', '$http', function($scope, $http) {
+
+			// $http本质上是对XMLHttpRequest对象的封装
+			$http({
+				url: '24-readjson.php',
+				// 注意与jq的区别，jq这里是type
+				method: 'post',
+				// 设置post请求头
+				headers: {
+					'Content-Type':'application/x-www-form-urlencoded'
+				},
+				// 与jq不同，angular要区分两种传参方式
+				// get传参用
+				params: {
+					name: 'sp1'
+				},
+				// post传参用
+				// 注意这里angular不会将对象转化为字符串，所以不能这么写
+				// data: {
+				// 	age: 10
+				// }
+				data: 'age=10'
+			// 与jq不同，success回调不是作为$http参数而是作为$http的一个方法
+			}).success(function(info) {
+				console.log(info);
+				$scope.table = info;
+			});
+
+
+		}]);
+
+		/* angular自定义服务的三种方法：
+			1. factory
+			2. service
+			3. value
+		*/
+
+		myApp.factory('format', ['$filter', function($filter) {
+			function format(obj) {
+				var s = '';
+				for (key in obj) {
+					s += key + '=' + obj[key] + '&';
+				}
+				s = s.slice(0, -1);
+				return s;
+			}
+			// 这里返回一个对象，可以调用任意个方法
+			return {
+				format: format
+			};
+		}]);
+
+		myApp.service('capitalize', ['$filter', function($filter) {
+			this.capitalize =  function(str) {
+				return str[0].toUpperCase() + str.slice(1);
+			}
+		}]);
+
+		// 本质上是一个服务，表现形式上是一个常量
+		myApp.value('author', 'sp1');
+		myApp.value('version', '1.0.2');
+
+		// 使用run可以直接运行而不用依赖控制器
+		myApp.run( ['format', 'author', 'version', 'capitalize', function(format, author, version, capitalize) {
+			var obj = {
+				name: 'sp1',
+				age: 10
+			};
+			console.log(format.format(obj));
+			console.log(capitalize.capitalize('hello world'));
+			console.log('Author: '+author+' Version: '+version);
+		}]);
+	</script>
+</body>
+</html>

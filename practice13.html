@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>practice13</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.topTitle {
+			height: 100px;
+			background-color: pink;
+		}
+		.navi {
+			width: 800px;
+			height: 42px;
+			background: #66ccff;
+			border-radius: 8px;
+			position: relative;
+			margin: 0 auto;
+		}
+		ul {
+			list-style: none;
+			position: relative;
+		}
+		li {
+			float: left;
+			width: 80px;
+			height: 42px;
+			text-align: center;
+			font: 500 16px/24px "simsun";
+			color: #fff;
+			cursor: pointer;
+		}
+		span {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 83px;
+			height: 42px;
+		}
+		span img {
+			width: 21px;
+			height: 21px;
+		}
+		.fixed {
+			position: fixed;
+			top: 0;
+			left: 50%;
+			margin-left: -400px;
+			z-index:5;
+		}
+		.imgs {
+			width: 1280px;
+			margin: 0 auto;
+		}
+		.imgs img {
+			width: 1280px;
+			height: 720px;
+		}
+	</style>
+	<script type="text/javascript" src="javascript/animate.js"></script>
+	<script>
+		window.onload = function () {
+			var topTitle = document.getElementsByClassName("topTitle")[0];
+			var navi = document.getElementsByClassName("navi")[0];
+			var height = topTitle.offsetHeight;
+			window.onscroll = function () {
+				//每次屏幕滑动把屏幕卷去的距离赋值给leader模拟获取显示区域离顶部的距离
+				leader = scroll().top;
+
+				if (scroll().top > height) {
+					navi.className += " fixed";
+					//减小抖动
+					imgs.style.paddingTop = navi.offsetHeight+"px";
+				}
+				else {
+					navi.className = "navi";
+
+					imgs.style.paddingTop = 0;
+				}
+			}
+			
+		}
+	</script>
+</head>
+<body>
+	<div class="topTitle">
+		我是头部
+	</div>
+	<div class="navi">
+		<span><img src="img/negated.png" alt=""></span>
+		<ul>
+			<li>首页</li>
+			<li>活动</li>
+			<li>招聘</li>
+			<li>公司</li>
+			<li>文化</li>
+		</ul>
+	</div>
+	<div class="imgs">
+		<img src="img/img1.jpg" alt="">
+		<img src="img/img2.jpg" alt="">
+		<img src="img/img3.jpg" alt="">
+		<img src="img/img4.jpg" alt="">
+		<img src="img/img5.jpg" alt="">
+	</div>
+
+	<script>
+		var liArr = document.getElementsByTagName("li");
+		var liW = liArr[0].offsetWidth;
+		var span = document.getElementsByTagName("span")[0];
+		var count = 0;
+		var target = 0;
+		var leader = 0;
+		var timer = null;
+		var imgs = document.getElementsByClassName("imgs")[0];
+		var imgArr = imgs.getElementsByTagName("img");
+
+		for (var i = 0; i < liArr.length; i++) {
+			liArr[i].index = i;
+			liArr[i].onmouseover = function () {
+				moveHS(span, this.index*liW);
+			}
+			liArr[i].onmouseout = function () {
+				moveHS(span, count*liW);
+			}
+			liArr[i].onclick = function () {
+				count = this.index;
+				moveHS(span, count*liW);
+
+				//获取目标位置
+				target = imgArr[this.index].offsetTop;
+
+				clearInterval(timer);
+				timer = setInterval (function() {
+					var step = (target - leader)/10;
+					step = step>0?Math.ceil(step):Math.floor(step);
+					leader = leader + step;
+					window.scrollTo(0,leader);
+					if (Math.abs(target - leader)<=Math.abs(step)) {
+						window.scrollTo(0,target);
+						clearInterval(timer);
+					}
+				}, 20)
+			}
+		}
+
+		function moveHS (box, x) {
+			//使用定时器之前先清空定时器
+			//一个元素只能有一个定时器，这样不会出现定时器冲突
+			clearInterval(box.timer);
+
+			box.timer = setInterval(function() {
+				var step = (x - box.offsetLeft)/10;
+				if (step>0) {
+					step = Math.ceil(step);
+				}
+				else step = Math.floor(step);
+				box.style.left = box.offsetLeft + step + "px";
+				//offset取值四舍五入
+				if (Math.abs(box.offsetLeft-x) < Math.abs(step)) {
+					box.style.left = x + "px";
+					clearInterval(box.timer);
+				}
+			}, 50);
+		}
+	</script>
+</body>
+</html>

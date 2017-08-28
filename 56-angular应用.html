@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="libs/angular-1.2.32/angular.min.js"></script>
+</head>
+<body ng-app="Tabs">
+	<div ng-controller='TabCtrl'>
+		<form ng-submit='add()'>
+			<input type="text" ng-model = 'msg'>
+		</form>
+		<ul class="todo">
+		Todo:
+			<li ng-repeat='(key, val) in todo'>
+				<input type="checkbox" ng-checked='val.status' ng-click='doit(key)'>
+				<span>{{val.text}}</span>
+				<button ng-click='delete(key, todo)'>X</button>
+			</li>
+		</ul>
+		<span>{{todo.length}} to do</span>
+		<ul class="done">
+		Done:
+			<li ng-repeat='val in done'>
+				<input type="checkbox" ng-checked='val.status' ng-click='undo(key)'>
+				<span>{{val.text}}</span>
+				<button ng-click='delete(key, done)'>X</button>
+			</li>
+		</ul>
+	</div>
+	<script>
+		var Tabs = angular.module('Tabs', []);
+		Tabs.controller('TabCtrl', ['$scope', function($scope) {
+			$scope.todo = [];
+			$scope.done = [];
+
+			$scope.add = function() {
+				$scope.todo.push({text : $scope.msg, status : false});
+				$scope.msg='';
+			}
+
+			$scope.doit = function(index) {
+				var tmp = $scope.todo.splice(index, 1)[0];
+				tmp.status = true;
+				$scope.done.push(tmp);
+			}
+
+			$scope.delete = function(index, arr) {
+				arr.splice(index, 1);
+			}
+
+			$scope.undo = function(index) {
+				var tmp = $scope.done.splice(index, 1)[0];
+				tmp.status = false;
+				$scope.todo.push(tmp);
+			}
+		}]);
+	</script>
+</body>
+</html>

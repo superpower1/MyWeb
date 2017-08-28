@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- 最外层必须有一个根节点，所有内容写在根节点中 -->
+<picture>
+	<flower>
+		<url>img/logo_1.jpg</url>
+		<info>Beautiful</info>
+	</flower>
+	<cat>
+		<url>img/logo_2.jpg</url>
+		<info>Little ball of fur</info>
+	</cat>
+	<sleep>
+		<url>img/logo_3.jpg</url>
+		<info>Life is short, sleep more</info>
+	</sleep>
+
+</picture>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas width="500" height="500"></canvas>
+	<script>
+		var cvs = document.getElementsByTagName('canvas')[0];
+		var ctx = cvs.getContext('2d');
+
+		function loadImage(imgUrl, fn) {
+			// 1. 遍历imgUrl，动态创建img对象并加载图片
+			// 2. 加载图片的过程中监听每一张图片的onload，当所有图片都触发onload时表示所有图片加载完毕，此时调用回调函数fn
+
+			// 存储加载完毕的资源
+			var imgObj = {};
+
+			var tmpImg;
+
+			// 记录已经加载完毕的图片数量
+			var loaded = 0;
+
+			// 统计需要加载的图片数量
+			var imgNum = 0;
+
+			// 遍历imgUrl，动态创建img对象并加载图片
+			for (var key in imgUrl) {
+				imgNum++;
+
+				tmpImg = new Image();
+				tmpImg.src = imgUrl[key];
+
+				imgObj[key] = tmpImg;
+
+				tmpImg.onload = function() {
+					// 加载完毕
+					loaded++;
+					// 如果加载完毕的图片和需要加载的图片一样多时表示加载完毕
+					if (loaded>=imgNum) {
+						// 执行回调函数
+						fn(imgObj);
+					}
+				} 
+			}
+		}
+
+		// 创建背景对象
+		/*
+		* constructor { bg } 背景构造函数
+		* param { ctx: Context } 绘制环境
+		* param { img: Image } 背景图片
+		* param { speed: number } 背景图片
+		*/
+		function Bg(ctx, img, speed) {
+			this.ctx = ctx;
+			this.img = img;
+			// 默认速度是10
+			this.speed = speed || 10;
+
+			this.x = 0;
+			this.y = 0;
+
+		}
+		// 给原型扩充方法
+		Bg.prototype.draw = function() {
+			this.ctx.drawImage(this.img, this.x, this.y);
+		}
+		Bg.prototype.update = function(sw) {
+			if (sw) {
+				this.x -= this.speed;
+			} else {
+				this.x += this.speed;
+			}
+		}
+
+		// 创建计时器显示
+		function Clock(ctx,x,y){
+			this.ctx = ctx;
+			this.x = x;
+			this.y = y;	
+		}
+		Clock.prototype.draw = function() {
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			ctx.fillStyle = 'red';
+			ctx.font = '900 40px 微软雅黑';
+			ctx.fillText('0:0:0', this.x, this.y);
+		}
+		Clock.prototype.update = function(hour,min,sec) {
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			ctx.fillStyle = 'red';
+			ctx.font = '900 40px 微软雅黑';
+			ctx.fillText(hour+":"+min+":"+sec, this.x, this.y);
+		}
+
+		// 创建小鸟对象
+		/*
+		* constructor { Bird }
+		* param { ctx: Context }
+		* param { img: Image }
+		* param { x: number } 小鸟的起始位置x
+		* param { y: number } 小鸟的起始位置y
+		*/
+		function Bird(ctx, img, x, y) {
+			this.ctx = ctx;
+			this.img = img;
+			this.x = x;
+			this.y = y;
+			this.frame = 0;
+
+			// 小鸟下落的速度
+			this.v = 10;
+			// 小鸟下落的加速度
+			this.a = 3;
+
+			this.width = this.img.width/3;
+			this.height = this.img.height;
+
+			this._bind();
+		}
+		Bird.prototype.draw = function() {
+			// this.ctx.drawImage(this.img, this.width*this.frame, 0, this.width, this.height, this.x, this.y, this.width, this.height);
+
+			// 小鸟转向
+			this.ctx.save();
+			this.ctx.translate(this.x+this.width/2, this.y+this.height/2);
+			
+			this.ctx.rotate(Math.PI/180*(this.v-10));
+			
+			this.ctx.drawImage(this.img, this.width*this.frame, 0, this.width, this.height, -this.width/2, -this.height/2, this.width, this.height);
+			this.ctx.restore();
+		}
+		Bird.prototype.update = function() {
+			this.frame++;
+			if (this.frame >= 3) {
+				this.frame = 0;
+			}
+			this.v += this.a;
+			this.y += this.v;
+
+		}
+
+		// _bind是内部调用的方法
+		Bird.prototype._bind = function() {
+			// self指向小鸟这个对象
+			var self = this;
+			this.ctx.canvas.addEventListener('click', function() {
+				self.v = -10;
+
+				// self.ctx.save();
+				// self.ctx.translate(self.x+self.width/2, self.y+self.height/2);
+				// self.ctx.rotate(-Math.PI/4);
+				// self.ctx.restore();
+			});
+		}
+
+		// 创建地面对象
+		/*
+		* constructor { Ground }
+		* param { ctx: Context }
+		* param { img: Image }
+		* param { speed: number }
+		*/
+		function Ground(ctx, img, speed) {
+			this.ctx = ctx;
+			this.img = img;
+			this.speed = speed || 10;
+
+			this.x = this.img.width*Ground.num;
+			this.y = this.ctx.canvas.height - this.img.height;
+
+			Ground.num++;
+		}
+
+		// 由于要创建多个大地的实例，这里给Ground方法添加一个属性记录创建了几个实例，为了方便计算每个实例的绘图位置
+		Ground.num = 0;
+
+		Ground.prototype.draw = function() {
+			this.ctx.drawImage(this.img, this.x, this.y);
+		}
+
+		Ground.prototype.update = function(sw) {
+			if (sw) {
+				this.x -= this.speed;
+			} else {
+				this.x += this.speed;
+			}
+			
+		}
+
+		// 创建管道对象
+		/*
+		* constructor { Pipe }
+		* param { ctx: Context }
+		* param { imgUp: Image } 口朝下的管道，绘制在上方
+		* param { imgDown: Image } 口朝上的管道，绘制在下方
+		* param { speed: number }
+		*/
+		function Pipe(ctx, imgUp, imgDown, speed, groundHeight) {
+			this.ctx = ctx;
+			this.imgUp = imgUp;
+			this.imgDown = imgDown;
+			this.speed = speed || 10;
+
+			this.width = this.imgUp.width;
+			this.height = this.imgUp.height;
+			this.groundHeight = groundHeight;
+
+			this.x = this.width*Pipe.num*4+300;
+			this.y = 0;
+			this.space = 150;
+			this.upperPipeY = 0;
+			this.lowerPipeY = 0;
+
+			Pipe.num++;
+
+			this._init();
+		}
+
+		Pipe.num = 0;
+
+		Pipe.prototype._init = function() {
+			// 管道的最大高度
+			var maxHeight = this.ctx.canvas.height - this.groundHeight - this.space -50;
+			// 随机生成的管道高度在50和maxHeight之间
+			var randomHeight = Math.random()*maxHeight;
+			if (randomHeight < 50) {
+				randomHeight = 50;
+			}
+
+			// 上面管道的y坐标是随机生成的高度减去管道图片的高度（负数）
+			this.upperPipeY = randomHeight - this.imgUp.height;
+
+			// 下面管道的y坐标是上面管道的高度（随机生成的高度）加上空隙的高度
+			this.lowerPipeY = randomHeight + this.space;
+
+
+		}
+
+		Pipe.prototype.draw = function () {
+			this.ctx.drawImage(this.imgUp, this.x, this.upperPipeY);
+			this.ctx.drawImage(this.imgDown, this.x, this.lowerPipeY);
+			this._drawPath();
+		}
+
+		Pipe.prototype.update = function() {
+			this.x -= this.speed;
+			if (this.x < -this.width) {
+				this._init();
+				this.x += this.width*Pipe.num*4;
+			}
+		}
+
+		// 绘制与管道相同大小的路径方便用isPointInPath(x,y)来判断小鸟是否碰撞到管道
+		Pipe.prototype._drawPath = function() {
+			this.ctx.rect(this.x, this.upperPipeY, this.width, this.height);
+			this.ctx.rect(this.x, this.lowerPipeY, this.width, this.height);
+		}
+
+
+	</script>
+
+	<script>
+		loadImage({
+			bird: 'img/bird.png',
+			land: 'img/land.png',
+			pipeDown: 'img/pipeDown.png',
+			pipeUp: 'img/pipeUp.png',
+			sky: 'img/sky.png',
+			boom: 'img/boom.png',
+		},
+		function(imgObj) {
+			// 根据背景大小设置画布大小
+			cvs.width = imgObj.sky.width-50;
+			cvs.height = imgObj.sky.height;
+
+			var sky = new Bg(ctx, imgObj.sky, 50); 
+			var bird = new Bird(ctx, imgObj.bird, 10, 10);
+			var land_1 = new Ground(ctx, imgObj.land);
+			var land_2 = new Ground(ctx, imgObj.land);
+			var land_3 = new Ground(ctx, imgObj.land);
+
+			var clock = new Clock(ctx,100,50);
+			
+			var pipe_1 = new Pipe(ctx, imgObj.pipeDown, imgObj.pipeUp, 20, 115);
+			var pipe_2 = new Pipe(ctx, imgObj.pipeDown, imgObj.pipeUp, 20, 115);
+			var pipe_3 = new Pipe(ctx, imgObj.pipeDown, imgObj.pipeUp, 20, 115);
+			var pipe_4 = new Pipe(ctx, imgObj.pipeDown, imgObj.pipeUp, 20, 115);
+			var pipe_5 = new Pipe(ctx, imgObj.pipeDown, imgObj.pipeUp, 20, 115);
+
+			var sw = true;
+			
+			var myDate = new Date();
+			var startTime = myDate.getTime();
+			var hour = 0;
+			var min = 0;
+			var sec = 0;
+			
+			var timer = setInterval(function() {
+				myDate = new Date();
+				// console.log(myDate.getTime()-startTime);
+				var birdTimer = myDate.getTime()-startTime;
+				hour = Math.floor(birdTimer/1000/60/60);
+				min = Math.floor(birdTimer/1000/60%3600);
+				sec = Math.floor(birdTimer/1000%60);
+				sec = sec<10?('0'+sec):sec;
+				min = min<10?('0'+min):min;
+				console.log(hour +":"+min +":"+sec);
+
+				// 小鸟的中心点
+				var birdX = bird.x + bird.width/2;
+				var birdY = bird.y + bird.height/2;
+
+
+				// 每次绘制新的画面时判断一下小鸟是否碰撞，如果碰撞，清除定时器，结束游戏
+				if (ctx.isPointInPath(birdX, birdY)) {
+					clearInterval(timer);
+					gameover(imgObj.boom, birdX, birdY);
+					return;
+				}
+
+				sky.draw();
+				sky.update(sw);
+
+				// 统一清除路径
+				ctx.beginPath();
+				
+				
+				pipe_1.draw();
+				pipe_1.update();
+				pipe_2.draw();
+				pipe_2.update();
+				pipe_3.draw();
+				pipe_3.update();
+				pipe_4.draw();
+				pipe_4.update();
+				pipe_5.draw();
+				pipe_5.update();
+
+				land_1.draw();
+				land_1.update(sw);
+				land_2.draw();
+				land_2.update(sw);
+				land_3.draw();
+				land_3.update(sw);
+
+				clock.update(hour,min,sec);
+				bird.draw();
+				bird.update();
+
+				// ctx.fill();
+				if((birdY<=0)||(birdY>=ctx.canvas.height-115)) {
+					clearInterval(timer);
+					gameover(imgObj.boom, birdX, birdY);
+					return;
+				}
+
+				sw = !sw;
+ 
+
+			}, 300);
+
+			
+			
+		});
+		function gameover(boomImg, x, y) {
+			var boom = {
+				width: boomImg.width/3,
+				height: boomImg.height,
+			}
+
+			var index = 0;
+
+			var boomTimer = setInterval(function() {				
+				ctx.drawImage(boomImg, index*boom.width, 0, 50, 50, x-boom.width/2, y-boom.height/2, 50, 50);
+
+				index++;
+
+				if (index>=3) {
+					clearInterval(boomTimer);
+
+					ctx.fillStyle = 'rgba(255,255,255,0.5)';
+					ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
+
+					ctx.textAlign = 'center';
+					ctx.textBaseline = 'middle';
+					ctx.fillStyle = 'red';
+					ctx.font = '900 40px 微软雅黑';
+					ctx.fillText('GAME OVER', ctx.canvas.width/2, ctx.canvas.height/2);
+				}
+			}, 100);
+		
+		}
+	</script>
+</body>
+</html>

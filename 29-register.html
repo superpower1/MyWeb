@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.tips {
+			width: 300px;
+			height: 30px;
+			background-color: red;
+			position: absolute;
+			left: 300px;
+			top: 0;
+			text-align: center;
+			padding: 0;
+			line-height: 30px;
+			display: none;
+		}
+		.tips p {
+			margin: 0;
+			color: ghostwhite;
+		}
+	</style>
+</head>
+<body>
+	<form action="">
+		Name: <input type="text" id='username'>
+	</form>
+	<div class="tips">
+		<p>用户名不能为空</p>
+	</div>
+
+	<script src="javascript/jquery.min.js"></script>
+	<script>
+		$(function () {
+			
+			$('#username').on('blur', function() {
+				var value = $(this).val();
+				// console.log(value);
+				$.ajax({
+					url: '29-registerHandler.php',
+					type: 'get',
+					data: {'name': value},
+					// 在发送之前执行的方法
+					beforeSend : function () {
+						if(value == '') {
+							$('.tips').fadeIn(1000).delay(2000).fadeOut(1000);
+							return false;
+						}
+					},
+					success : function (data) {
+						if(data === '该用户名已被占用'){
+							$('.tips p').text(data);
+							$('.tips').fadeIn(1000).delay(2000).fadeOut(1000);
+						}else{
+							$('.tips p').text(data);
+							$('.tips').css({'background-color': 'green'}).fadeIn(1000).delay(2000).fadeOut(1000);
+						}
+							
+						
+						// alert(data);
+					}
+				});
+			})
+		})
+	</script>
+</body>
+</html>

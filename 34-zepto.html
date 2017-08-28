@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>Document</title>
+	<script src="javascript/zepto-master/src/zepto.js"></script>
+	<!-- 使用zepto的好处是可以选择需要的模块加载 -->
+	<script src="javascript/zepto-master/src/event.js"></script>
+	<!-- zepto封装了移动端常用的tap和swipe事件 -->
+	<script src="javascript/zepto-master/src/touch.js"></script>
+	<script src="javascript/zepto-master/src/fx.js"></script>
+	<style>
+		div {
+			width: 100px;
+			height: 100px;
+			background-color: pink;
+		}
+	</style>
+	<script>
+		$(function () {
+			$('div').on('click', function() {
+				console.log('click');
+			})
+			$('div').on('tap', function() {
+				console.log('tap');
+			})
+			$('div').on('longTap', function() {
+				console.log('longtap');
+			})
+			$('div').on('swipeLeft', function() {
+				console.log('swipe left');
+			})
+			$('div').on('swipeRight', function() {
+				console.log('swipe right');
+			})
+			
+		})
+	</script>
+</head>
+<body>
+	<div></div>
+</body>
+</html>

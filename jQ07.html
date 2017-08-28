@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		div {
+			width: 100px;
+			height: 100px;
+			background-color: red;
+			position: absolute;
+		}
+	</style>
+	<script src="jquery-1.11.1.js"></script>
+	<script>
+		$(function(){
+			// $("button").eq(0).click(function(){
+			// 	$("div").css({"left":100, "top":100});
+			// });
+			
+			//用on("事件名",处理函数)来绑定事件，可以绑定多个事件
+			$("button").on("click mouseenter", function(){
+				$("div").css({"left":100, "top":100});
+
+			});
+
+			//用off("事件名")来解绑，可以解绑任意事件
+			$("button").off("mouseenter");
+
+			//trigger和triggerHandler触发事件
+			//trigger触发事件，triggerHandler不触发事件，而是执行该事件处理函数本身，区别在于拉栓引爆手雷和用枪射爆手雷
+			$("div").on("mouseenter", function() {
+				$("button").triggerHandler("click");
+			});
+
+			$("input").on("click", function() {
+				//选定所有内容（能够输入内容的标签）
+				$(this).select();
+			});
+		});
+	</script>
+</head>
+<body>
+	
+	<button>设置</button>
+	<div></div>
+	<input type="text" value="helloworld">
+</body>
+</html>

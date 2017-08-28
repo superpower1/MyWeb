@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.wrap > li {
+			background-color: pink;
+			margin: 10px;
+			float: left;
+		}
+
+		.wrap > li > ul {
+			display: none;
+		}
+
+	</style>
+	<script src="jquery-1.11.1.js"></script>
+	<script>
+		$(function () {
+			var li = $("li");
+			for (var i = 0; i < li.length; i++) {
+				li[i].style.backgroundColor = "red";
+			}
+		});
+
+		$(document).ready(function() {
+			var jqwrap = $(".wrap > li");
+			jqwrap.mouseenter(function() {
+				//this是DOM对象，将其包装成jq对象
+				$(this).children("ul").show();
+			});
+
+			jqwrap.mouseleave(function() {
+				$(this).children("ul").hide();
+			});
+
+			var jqli1 = $(".wrap > li > ul > li:odd");
+			var jqli2 = $(".wrap > li > ul > li:even");
+			jqli1.css("backgroundColor","yellow");
+			jqli2.css("backgroundColor","blue");
+
+			var color = "";
+			var jqli = $(".wrap > li > ul > li");
+			jqli.mouseenter(function() {
+				
+				color = $(this).css("backgroundColor");
+				$(this).css("backgroundColor","white");
+			});
+			jqli.mouseleave(function() {
+				
+				$(this).css("backgroundColor",color);
+			});
+		});
+
+
+	</script>
+</head>
+<body>
+	<ul class="wrap">
+		<li><a href="">一级菜单1</a><ul>
+			<li>二级菜单1</li>
+			<li>二级菜单2</li>
+			<li>二级菜单3</li>
+			<li>二级菜单4</li>
+		</ul></li>
+		<li><a href="">一级菜单2</a><ul>
+			<li>二级菜单1</li>
+			<li>二级菜单2</li>
+			<li>二级菜单3</li>
+			<li>二级菜单4</li>
+		</ul></li>
+		<li><a href="">一级菜单3</a><ul>
+			<li>二级菜单1</li>
+			<li>二级菜单2</li>
+			<li>二级菜单3</li>
+			<li>二级菜单4</li>
+		</ul></li>
+		<li><a href="">一级菜单4</a><ul>
+			<li>二级菜单1</li>
+			<li>二级菜单2</li>
+			<li>二级菜单3</li>
+			<li>二级菜单4</li>
+		</ul></li>
+		<li><a href="">一级菜单5</a><ul>
+			<li>二级菜单1</li>
+			<li>二级菜单2</li>
+			<li>二级菜单3</li>
+			<li>二级菜单4</li>
+		</ul></li>
+	</ul>
+</body>
+</html>

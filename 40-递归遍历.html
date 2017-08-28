@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		window.onload = function() {
+			// 在DOM中没有提供直接获取后代元素的API，所以需要通过递归childNode来获取每一代的所有子元素
+			function getAllChildren(node) {
+				var childNodes = node.childNodes;
+				var allChildren = [];
+				for (var i = 0; i < childNodes.length; i++) {
+					// node.childNodes会返回包括文本节点在内的所有节点，通过childNodes[i].nodeType == 1找到元素节点
+					if (childNodes[i].nodeType == 1) {
+						allChildren.push(childNodes[i]);
+						// childNodes[i].style = 'border: 1px solid red';
+						var temp = getAllChildren(childNodes[i]);
+						// 因为每次递归都会创建新的allChildren数组，所以将返回的allChildren数组先存为temp，再用concat拼接数组
+						allChildren = allChildren.concat(temp);
+					} 
+				}
+				return allChildren;
+			}
+			function addBorder(nodes) {
+				for (var i = 0; i < nodes.length; i++) {
+					nodes[i].style = 'border: 1px solid blue';
+				}
+			}
+
+			addBorder(getAllChildren(document.body));
+		}
+		
+	</script>
+</head>
+<body>
+	<div>div1
+		<ul>ul
+			<li>li1<span>1</span><span>2</span></li>
+			<li>li2<span>1</span><span>2</span></li>
+			<li>li3<span>1</span><span>2</span></li>
+		</ul>
+	</div>
+	<div>div2
+		<ul>ul
+			<li>li1<span>1</span><span>2</span></li>
+			<li>li2<span>1</span><span>2</span></li>
+			<li>li3<span>1</span><span>2</span></li>
+		</ul>
+	</div>
+</body>
+</html>

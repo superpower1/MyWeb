@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		var jj = {
+
+			// 包含所有听众（方法）数组的对象
+			listeners: {
+				event1: [],
+				event2: [],
+			},
+
+			event1Trigger: function() {
+				this.listeners.event1.forEach( function(listen) {
+					listen();
+				});
+			},
+
+			event2Trigger: function() {
+				this.listeners.event2.forEach( function(listen) {
+					listen();
+				});
+			},
+		};
+
+		// 模块1就是一个听众
+		(function(w){
+			// 将听众方法传入监听者的听众（方法）数组
+			jj.listeners.event1.push( function() {
+				console.log('listener1 event1 reaction');
+			});
+			jj.listeners.event2.push( function() {
+				console.log('listener1 event2 reaction');
+			});
+		}(window));
+
+		// 模块2是另一个听众
+		(function(w){
+			jj.listeners.event1.push( function() {
+				console.log('event1 listener2 reaction');
+			});
+		}(window));
+
+		// 触发监听者，依次告知所有听众（也就是执行所有听众（方法））
+		jj.event1Trigger();
+		jj.event2Trigger();
+
+
+	</script>
+</body>
+</html>

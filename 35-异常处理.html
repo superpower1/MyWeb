@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+	// 这里的test并没有定义所以会报错，try的好处是就算这里出现异常也继续执行之后的命令
+	// 注意：如果语法写错的异常是不能被捕捉
+		try{
+			test();
+			// throw用来抛出异常信息
+			throw '异常发生';
+		}catch(e){
+			// 在catch里处理抛出异常
+			console.log(e);
+		}
+		console.log('我可以被执行');
+		test();
+		console.log('我因为上一句的异常不会被执行');
+
+		function sum(num1, num2) {
+			if (num1==undefined || num2==undefined) {
+				throw{
+					errMsg: '请传入正确参数'
+				}
+			} else {
+				return num2+num1;
+			}
+		}
+		try {
+			sum();
+		}
+		catch(e) {
+			console.log(e.errMsg);
+		}
+		finally {
+			// 不管有没有异常都执行的命令
+			// 一般在node.js里会在这里释放资源
+		}
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

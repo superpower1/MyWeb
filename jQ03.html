@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="jquery-1.11.1.js"></script>
+	<style>
+		.red {
+			background-color: red;
+		}
+		div {
+			display: none;
+			background-color: blue;
+		}
+	</style>
+	<script>
+		$(document).ready(function () {
+			//操作css属性的方法
+			//1: css(json);
+			$("div").css({"width":500, "height":500});
+			//2: css(属性，值)；
+			//$("div").css("backgroundColor","pink");
+			//获取属性值的方法：css(属性)
+			console.log($("div").css("width"));
+		
+		})
+
+		$(function() {
+			$("button").eq(0).click(function() {
+				//判断是否有类
+				// if(!$("div").hasClass("red")) {
+				// 	//添加类
+				// 	$("div").addClass("red");
+				// }
+				// else {
+				// 	//删除类
+				// 	$("div").removeClass("red");
+				// }
+
+				//toggle:如果有删除，否则添加
+				$("div").toggleClass("red");
+			});
+
+			$("button").eq(1).click(function() {
+				//show(毫秒)控制显示时间
+				$("div").show(2000);
+			});
+
+			$("button").eq(2).click(function() {
+				//hide(字符串slow,fast,normal)控制显示时间
+				//$("div").hide("normal");
+				//hide(毫秒值，回调函数)回调函数完成后执行
+				$("div").hide(1000,function() {
+
+				});
+			});
+
+			$("button").eq(3).click(function() {
+				$("div").toggle(1000);
+			});
+
+			$("button").eq(4).click(function() {
+				// $("div").slideUp(1000);
+				// $("div").slideDown(1000);
+				$("div").slideToggle(1000);
+			});
+
+			$("button").eq(5).click(function() {
+				// $("div").fadeIn(1000);
+				// $("div").fadeOut(1000);
+				// $("div").fadeToggle(1000);
+				//改透明度
+				$("div").fadeTo(1000,0.5);
+			});
+
+			$("button").eq(6).click(function() {
+				var json = {"height":100, "width":100};
+				//自定义动画
+				$("div").animate(json,1000);
+			});
+
+			$("button").eq(7).click(function() {
+				//停止动画stop(true:后续动画不执行, true:立即执行完当前动画)
+				//不写参数默认都是false
+				$("div").stop();
+			});
+		})
+	</script>
+</head>
+
+<body>
+	<button>Change</button>
+	<button>Show</button>
+	<button>Hide</button>
+	<button>Switch</button>
+	<button>Slide</button>
+	<button>Fade</button>
+	<button>Animate</button>
+	<button>Stop</button>
+
+	<div></div>
+</body>
+</html>

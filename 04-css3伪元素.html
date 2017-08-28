@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		/*用css模拟出来的标签*/
+		span::before {
+			content: "我是css模拟的标签";
+			color: red;
+		}
+
+		span::after {
+			content: "我也是伪元素";
+			color: blue;
+		}
+
+		p::first-line {
+			color: red;
+		}
+
+		p::first-letter {
+			font-size: 20px;
+			/*文字环绕*/
+			/*float: left;*/
+		}
+
+		p::selection {
+			color: ghostwhite;
+			background-color: grey;
+		}
+	</style>
+</head>
+<body>
+	<span>我是真的标签</span>
+	<p>
+		I am you father!<br>
+		我是你爸爸！<br>
+		私は君の父さんだ！
+	</p>
+</body>
+</html>

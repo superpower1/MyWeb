@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>practice04</title>
+	<style>
+		.tree1 {
+			margin: auto;
+			width: 0px;
+			height: 0px;
+			/*边框：样式 宽度 颜色*/
+			/*dotted-点线，solid-实线，dashed-虚线，double-双实线*/
+			border: solid 20px transparent;
+			border-top: 0px;
+			border-bottom: solid 100px green;
+		}
+		.tree2 {
+			margin: auto;
+			width: 0px;
+			height: 0px;
+			border: solid 40px transparent;
+			border-top: 0px;
+			border-bottom: solid 100px green;
+		}
+		.tree3 {
+			margin: auto;
+			width: 0px;
+			height: 0px;
+			border: solid 80px transparent;
+			border-top: 0px;
+			border-bottom: solid 100px green;
+		}
+		.trunk {
+			margin: auto;
+			width: 20px;
+			height: 40px;
+			background-color: brown;
+		}
+		img {
+			width: 400px;
+			height: 400px;
+			/*去掉默认的边框，兼容性最好的写法*/
+			border: 0 none;
+			margin: 0 auto;
+			display: block;
+		}
+		.box {
+			width: 200px;
+			height: 200px;
+			background-color: red;
+			/*上右下左*/
+			padding: 5px 20px 20px 5px;
+			/*上下为10px，水平居中显示*/
+			margin: 10px auto;
+			
+		}
+		.box2 {
+			width: 100px;
+			height: 100px;
+			/*绝对定位,父容器左上角为原点*/
+			position: absolute;
+			left: 20px;
+			top: 20px;
+			border: solid 10px red;
+
+		}
+		.box3 {
+			width: 100px;
+			height: 100px;
+			/*相对定位,相對於原來的位置*/
+			position: relative;
+			left: 20px;
+			top: 20px;
+			border: solid 10px red;
+		}
+	</style>
+</head>
+<body>
+	<div class="tree1"></div>
+	<div class="tree2"></div>
+	<div class="tree3"></div>
+	<div class="trunk"></div>
+	<img src="img/ygo.jpg" alt="">
+	<div class="box"></div>
+	<div class="box2"></div>
+	<div class="box3"></div>
+</body>
+</html>

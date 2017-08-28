@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		var animal = {
+			name: 'catty',
+		};
+
+		var human= Object.create(animal);
+
+		// 这个方法继承o，但是存在兼容性问题
+		// 为了解决兼容性问题自己定义一个函数
+		function create(obj) {
+			if (Object.create) {
+				return Object.create(obj);
+			} else {
+				function F(){};
+				F.prototype = obj;
+				return new F();
+			}
+		}
+
+		var man = create(human);
+
+		console.log(man.name);
+
+		// valueOf()获取当前对象的值
+		man.valueOf = function() {
+			return 1;
+		}
+
+		// 默认会先去调用对象的valueOf方法，如果获取到的值没办法运算，则调用toString方法进行字符串拼接
+		console.log(1+man);
+
+
+
+	</script>
+</body>
+</html>

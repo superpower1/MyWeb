@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<h1>用ajax发送请求</h1>
+	username: <input type="text">
+	id: <input type="text">
+	<button>send</button>
+	<script>
+		document.querySelector('button').onclick = function () {
+			// 1.创建异步对象
+			var ajaxObj = new XMLHttpRequest();
+
+			// 2.设置请求的参数（请求方法，请求的url）
+			// 可以通过修改url的值来向服务器发送数据
+			var username = document.querySelectorAll('input')[0].value;
+			var id = document.querySelectorAll('input')[1].value;
+			ajaxObj.open('get','21-ajaxHandler.php?username='+username+'&id='+id);
+				
+			// 3.发送请求
+			ajaxObj.send();
+			
+			// 4.注册事件（需要判断请求的状态）
+			ajaxObj.onreadystatechange = function(){
+				// readystate的值和status的值可参考文档
+				// xmlhttp.readyState == 4说明请求已经返回，一共有1,2,3,4四个状态
+				// xmlhttp.status == 200说明请求页面存在，否则是404
+				if((ajaxObj.readyState == 4)&&(ajaxObj.status == 200)) {
+			// 5.在注册实践中获取返回的数据并使用
+					// 返回的数据保存在异步对象的responseText属性中
+					document.querySelector('h1').innerHTML = ajaxObj.responseText;
+				}
+			}
+			
+		}
+		
+	</script>
+</body>
+</html>

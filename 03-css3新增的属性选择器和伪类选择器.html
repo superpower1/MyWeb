@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		div {
+			width: 100px;
+			height: 100px;
+			border: 1px solid #000;
+			margin: 10px;
+		}
+		/*只会选择有title属性的div*/
+		div[title] {
+			background-color: red;
+		}
+		/*只会选择有class属性并且class值为1的div*/
+		div[class = "1"] {
+			background-color: blue;
+		}
+
+		/*只会选择有class属性并且class值为以1开头的div*/
+		div[class ^= "2"] {
+			background-color: green;
+		}
+
+		/*只会选择有class属性并且class值为以3结尾的div*/
+		div[class $= "3"] {
+			background-color: orange;
+		}
+
+		/*只会选择有class属性并且class值包含a的div*/
+		div[class *= "a"] {
+			background-color: violet;
+		}
+		
+		/*以前学习过的伪类：hover，active，visited，link*/
+		/*新的伪类：empty选择空的div*/
+		div:empty {
+			border-radius: 10px;
+		}
+
+		 
+
+	</style>
+
+	<script>
+		
+	</script>
+</head>
+<body>
+	<div title="main"></div>
+	<div class="1">1</div>
+	<div class="22">2</div>
+	<div class="23">3</div>
+	<div class="23a3">4</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="libs/angular-1.2.32/angular.min.js"></script>
+</head>
+<body ng-app='myApp'>
+	<div ng-controller='myCtrl'>
+		<ul>
+			<!-- currency就是过滤器，可以通过:传参 -->
+			<li>{{price|currency: '￥'}}</li>
+			<li>{{date|date: 'yyyy-MM-dd hh:mm:ss'}}</li>
+			<!-- 注意：这里如果传参是对象的话，两个}}要空开} } -->
+			<li>{{objArr|filter:{age: 18} }}</li>
+			<!-- 负数从右往左数 -->
+			<li>{{objArr|limitTo: -1 }}</li>
+			<li>{{sayHello|lowercase}}</li>
+			<li>{{sayHello|uppercase}}</li>
+			<!-- 参数为需要保留的位数 -->
+			<li>{{numString|number: 3}}</li>
+			<!-- 两个参数用:分隔，第一个参数是排序的依据，第二个参数控制排序方式，默认为false升序 -->
+			<li>{{objArr|orderBy: 'age' : true}}</li>
+			<!-- 过滤器其实就是管道，上一个函数（过滤器）的输出可以作为下一个函数（过滤器）的输入，所以过滤器可以不断叠加使用 -->
+			<li>{{sayHello|lowercase|limitTo: 5}}</li>
+			<!-- 测试自定义过滤器 -->
+			<li>{{sayHello|myFilter}}</li>
+		</ul>
+	</div>
+	<div ng-controller='newCtrl'>
+		<ul>
+			<li>{{name}}</li>
+		</ul>
+	</div>
+	<script>
+		var myApp = angular.module('myApp', []);
+		myApp.controller('myCtrl', ['$scope', function($scope) {
+			$scope.price = 11.45;
+			$scope.date = new Date;
+			$scope.objArr = [
+				{name: 'sp1', age: 18},
+				{name: 'sp2', age: 20},
+				{name: 'sp3', age: 15}
+			];
+			$scope.sayHello = 'hello WORLD';
+			$scope.numString = '3.1415';
+			$scope.arr = ['a', 'b', '1', '2'];
+		}]);
+
+		// 自定义过滤器
+		myApp.filter('myFilter', function() {
+			// 返回一个回调
+			return function(input) {
+				return input+'!';
+			}
+		});
+
+		myApp.controller('newCtrl', ['$scope', '$filter', function($scope, $filter) {
+			// 除了可以在view里过滤，也可以在model里调用过滤器服务过滤数据
+			$scope.name = 'Angular Js';
+			$scope.name = $filter('myFilter')($scope.name);
+		}]);
+	</script>
+</body>
+</html>

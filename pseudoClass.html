@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>pseudoClass</title>
+	<style type="text/css">
+		body {
+			font-size: 20px;
+			/*sans-serif是在此前所有字体都失效的时候查找任意一种非衬线体字体*/
+			font-family: "微软雅黑", "Lucida Console", sans-serif;
+		}
+
+		#wrap {
+			color: yellow;
+		}
+
+		.box {
+			color: blue;
+		}
+
+		a:link {
+			color: red;
+		}
+		a:visited {
+			color: blue;
+		}
+		a:hover {
+			background-color: silver;
+		}
+		a:active {
+			color: yellow;
+		}
+		a:focus {
+			font-size: 20px;
+		}
+		.txt:focus {
+			background-color: grey;
+		}
+		.article:before, .article:after {
+			content: "-----------";
+			/*将当前伪元素转换为块级元素*/
+			display: block;  
+		}
+		.article {
+			/*加粗处理，字体粗细100-900（100的整数倍），400是normal，700是bold*/
+			font-weight: 700;
+			/*字体自带的倾斜*/
+			font-style: italic;
+			/*系统将字体倾斜*/
+			font-style: oblique;
+			/*
+			*font字体合写：font: font-style font-weight font-size/line-height font-family
+			*前两个可以省略，但必须有font-size和font-family
+			*/
+			font: oblique 700 20px "宋体";
+			/*字间距*/
+			letter-spacing: 5px;
+			/*词间距*/
+			word-spacing: 20px;
+		}
+
+	</style>
+</head>
+<body>
+	<ul>
+		<li><a href="http://www.bilibili.com">b站</a></li>
+		<li><a href="http://www.google.com">谷歌</a></li>
+		<li><a href="http://www.baidu.com">百度</a></li>
+	</ul>
+	<input type="text" class="txt">
+	<p>
+		<hr>
+	</p>
+	<p class="article">
+		我是一段, I am superman
+	</p>
+	<p>
+		<hr>
+	</p>
+
+	<div class="box">我是div
+		<p id="wrap">我是段落
+			<ul>
+			    <li>我是列表项<a class="box" id="wrap" style="color: red" href="#">我是超链接</a></li>
+			</ul>
+		</p>
+	</div>
+</body>
+</html>

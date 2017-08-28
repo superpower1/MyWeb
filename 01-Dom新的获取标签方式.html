@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.box {
+			width: 100px;
+			height: 100px;
+			background-color: blue;
+			margin: 10px;
+		}
+	</style>
+	<script>
+		window.onload = function () {
+			//与jQuery类似，但是只有符合条件的第一个元素会被选中，jQuery是选中所有符合条件的元素
+			var box1 = document.querySelector(".box");
+			box1.style.backgroundColor = "red";
+			//如果需要获取所有的标签用querySelectorAll，返回的是数组
+			var box = document.querySelectorAll(".box");
+			box[1].style.backgroundColor = "yellow"; 
+		}
+		
+	</script>
+</head>
+<body>
+	<div class="box box1" id="box1"></div>
+	<div class="box box2"></div>
+	<div class="box box3"></div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!-- emmet语法帮我们封装了viewport的快捷写法，只要写meta:vp按tab键就可以了 -->
+	<!-- name="viewport" 告诉浏览器这个meta标签设置的是viewport属性 -->
+	<!-- content设置viewport的各种属性：
+		width=device-width宽度与设备宽度一致，一般不设高度
+		user-scalable=no不允许用户缩放
+		initial-scale视口初始的缩放比例，一般设成1.0
+		maximum-scale=1.0, minimum-scale=1.0最大最小缩放值 -->
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minim um-scale=1.0">
+	<title>Document</title>
+	<style>
+		a {
+			width: 200px;
+			height: 200px;
+			display: block;
+			/*设成transparent清除点击高亮效果*/
+			-webkit-tap-highlight-color: orange;
+			/*在移动端设置所有的盒子都应该是border-box，以保证盒子大小不变*/
+			box-sizing: border-box;
+
+		}
+
+		input {
+			/*扁平化*/
+			border: 0;
+			/*移动端在宽度上为了适配会使用百分比*/
+			width: 100%;
+			height: 100px;
+			background-color: grey;
+			/*移动端清除浏览器的默认样式*/
+			-webkit-appearance: none;
+			/*为了不让用户任意缩放可以设置最小宽度*/
+			min-width: 200px;
+		}
+		
+	</style>
+</head>
+<body>
+	<a href=""></a>
+	<input type="button" value="click">
+</body>
+</html>

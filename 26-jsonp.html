@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		#map {
+			width: 500px;
+			height: 500px;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+	<button>GoogleMap</button>
+
+	<script src="javascript/jquery.min.js"></script>
+	<script>
+		function myfunc (data) {
+			console.log(data);
+			$('#map').css('display', 'block');
+			var map = new google.maps.Map(document.getElementById('map'), {
+	          center: {lat: -34.397, lng: 150.644},
+	          scrollwheel: false,
+	          zoom: 8
+	        });
+		}
+		$(function() {
+			$('button').on('click', function () {
+				// 使用jq发jsonp
+				$.ajax({
+					// 密钥key需要自己申请
+					url:'https://maps.googleapis.com/maps/api/js?key=AIzaSyAjWn1NIBzfo8lE_6b3BfmDBOuJWe8oRQw',
+					dataType: 'jsonp',
+					success: function(data) {
+						// 如果不写jsonpCallback默认调用success
+						// console.log(data);
+					},
+					jsonpCallback: 'myfunc'
+				});
+			});
+		});
+	</script>
+</body>
+</html>

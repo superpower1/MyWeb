@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.box {
+			width: 100px;
+			height: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="box"></div>
+	<button>red</button>
+	<script src="libs/angular-1.2.32/angular.min.js"></script>
+	<script>
+		// angular.element()可以将原生DOM对象转化为jQ对象
+		// 如果引入了jQ的话，angular.element()就相当于$()，如果没有引入，那么angular.element()就调用angular内置的jQuery Lite，只包含部分jQ的基本功能
+
+		var btn = document.querySelector('button');
+		var box = document.querySelector('.box');
+		angular.element(btn).on('click', function() {
+			angular.element(box).css('background-color', 'red');
+		});
+
+	</script>
+</body>
+</html>

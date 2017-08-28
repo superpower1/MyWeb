@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>practice12</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.box {
+			width: 384px;
+			height: 216px;
+			margin: 100px auto;
+			padding: 5px;
+			border: 1px solid #ccc;
+			
+		}
+		.inner {
+			width: 384px;
+			height: 216px;
+			/*overflow: hidden;*/
+			position: relative;
+		}
+		ul {
+			list-style: none;
+			width: 1000%;
+			position: absolute;
+			left: 0;
+			top: 0;
+		} 
+		li {
+			float: left;
+		}
+		img {
+			width: 384px;
+			height: 216px;
+			vertical-align: middle;
+		}
+		.num {
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+		}
+		span {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			background-color: #fff;
+			text-align: center;
+			cursor: pointer;
+		}
+		.LRButton{
+			width: 384px;
+			height: 75px;
+			position:absolute;
+		}
+		.LRButton div{
+			width: 25px;
+			height: 75px;
+			overflow:hidden;
+			position: relative;
+			top:70px;
+			background-color: white;
+			opacity: 0.3;
+			
+		}
+		.LRButton div:hover{
+			cursor:pointer;
+		}
+		.LRButton .LButton{
+			float:left;
+		}
+		.LRButton .RButton{
+			float:right;
+		}
+		.RButton img{
+			position:absolute;
+			top:-75px;
+		}
+		.LRButton img{
+			width: 100px;
+			height: 150px;
+		}
+		.current {
+			background-color: orange;
+			color: white;
+		}
+
+	</style>
+	<script>
+		window.onload = function () {
+			var idx = 0;
+			var label = 0;
+			var ul = document.getElementsByTagName("ul")[0];
+			var spanArr = document.getElementsByTagName("span");
+			for (var i = 0; i < spanArr.length; i++) {
+				spanArr[i].onclick = function () {
+					for (var j = 0; j < spanArr.length; j++) {
+						spanArr[j].className = "";
+					}
+					this.className = "current";
+					//移动ul
+					if (idx === 5) {
+						ul.style.left = "0"; 
+					}
+					var num = parseInt(this.innerHTML);
+					idx = num -1;
+					label = num - 1;
+					console.log("idx"+idx+" "+"label"+label);
+					moveH(ul, -(idx)*384); 		
+				}
+			}
+
+			var LRButton = document.getElementsByClassName("LRButton")[0];
+			var LButton = LRButton.getElementsByClassName("LButton")[0];
+			var RButton = LRButton.getElementsByClassName("RButton")[0];
+
+			LButton.onclick = function () {
+				idx--;
+				label--;
+				if(label < 0){
+					label = 4;
+				}
+
+				if(idx < 0){
+					idx = 4;
+					ul.style.left = -(idx+1)*384+"px"; 
+				}
+				console.log("idx"+idx+" "+"label"+label);
+
+				for (var j = 0; j < spanArr.length; j++) {
+						spanArr[j].className = "";
+					}
+				spanArr[label].className = "current";
+
+				moveH(ul, -(idx)*384);
+			}
+
+			RButton.onclick = function () {
+				idx++;
+				label++;
+				if(label > spanArr.length-1){
+					label = 0;
+				}
+				if(idx > spanArr.length){
+					idx = 1;
+					ul.style.left = 0; 
+				}
+
+				console.log("idx"+idx+" "+"label"+label);
+
+				for (var j = 0; j < spanArr.length; j++) {
+						spanArr[j].className = "";
+					}
+				spanArr[label].className = "current";
+
+				moveH(ul, -(idx)*384);
+				
+			}
+
+
+			function moveH (box, x) {
+				//使用定时器之前先清空定时器
+				//一个元素只能有一个定时器，这样不会出现定时器冲突
+				clearInterval(box.timer);
+
+				if (box.offsetLeft > x) {speed = -10;}
+				else {speed = 10;}
+				box.timer = setInterval(function() {
+					box.style.left = box.offsetLeft + speed + "px";
+					if (Math.abs(box.offsetLeft-x)<=10) {
+						box.style.left = x + "px";
+						clearInterval(box.timer);
+					}
+				}, 10);
+			}
+		}
+	</script>
+</head>
+<body>
+	<div class="box">
+		<div class="inner">
+			<ul>
+				<li><img src="img/img1.jpg" alt=""></li>
+				<li><img src="img/img2.jpg" alt=""></li>
+				<li><img src="img/img3.jpg" alt=""></li>
+				<li><img src="img/img4.jpg" alt=""></li>
+				<li><img src="img/img5.jpg" alt=""></li>
+				<li><img src="img/img1.jpg" alt=""></li>
+			</ul>
+			<div class="num">
+				<span class="current">1</span>
+				<span>2</span>
+				<span>3</span>
+				<span>4</span>
+				<span>5</span>
+			</div>
+			<div class="LRButton">
+				<div class="LButton"><img src="img/LRButton.png" alt=""></div>
+				<div class="RButton"><img src="img/LRButton.png" alt=""></div>
+			</div>
+		</div>
+	
+	</div>
+</body>
+</html>

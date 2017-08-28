@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		// js是单线程的，有3个线程：
+			// 1. 渲染任务
+			// 2. js代码执行任务
+			// 3. 事件处理任务
+		// js代码执行顺序：
+			// 1. 先执行主任务
+			// 2. 再执行次要任务（包括setTimeout和setInterval中的回调函数）
+
+		// js要等主线程代码执行完毕之后再去检查回调函数有没有到执行时间，所以这里只会打印五个5，而不是0,1,2,3,4
+		function func() {
+			for (var i = 0; i < 5; i++) {
+				setTimeout(function() {
+					console.log(i);
+				}, 0);
+			}
+		}
+		// func();
+
+		// 解决这个问题：
+		function func2() {
+			for (var i = 0; i < 5; i++) {
+				function foo(j) {
+					// 这里相当于为每个新创建的foo函数定义一个j
+					return function() {
+						console.log(j);
+					}
+				}
+				// 把每次循环的i值传入函数中以j保存起来
+				var f=foo(i);
+				// 这里不能写setTimerout(f(),0)，因为setTimeout里应该写的是函数内容，而不是函数调用的结果
+				setTimeout(f, 0);
+			}
+		}
+		// func2();
+
+		// 使用自调用函数（立即执行函数表达式iife(immediate invoked function expression)）优化代码：
+		function func3() {
+			for (var i = 0; i < 5; i++) {
+				setTimeout((function(j){
+						return function() {
+							console.log(j);
+						}
+					}(i))
+				, 0);
+			}
+		}
+		func3();
+		
+		// iife的其他写法：
+		+function(){
+			
+		}();
+
+	</script>
+</body>
+</html>

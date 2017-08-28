@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas width="500" height="500"></canvas>
+	<script>
+		var cvs = document.getElementsByTagName('canvas')[0];
+		var ctx = cvs.getContext('2d');
+
+		function angle2Radian(angle) {
+			return Math.PI/180*angle;
+		}
+
+		ctx.arc(100,100,5,0,angle2Radian(360));
+		ctx.fill();
+		for (var i = 0; i < 4; i++) {
+			ctx.beginPath();
+			// arc(原点x, 原点y, 半径, 起始弧度, 终点弧度 [, 顺逆时针(默认顺)])
+			ctx.arc(100,100,20*i+5,0,angle2Radian(270),true);
+			ctx.stroke();
+		}
+
+		/*
+		* constructor {Pie} 饼图的构造函数
+		* param {x: number} 圆心x坐标
+		* param {y: number} 圆心y坐标
+		* param {r: number} 圆的半径
+		* param {data: Array} 数据数组
+		*/
+		function Pie(x, y, r, data){
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.data = data;
+			this.colors = ['red','yellow','blue','green','purple','pink','lightgreen','lightblue',];
+
+			this.draw = function () {
+				var self = this;
+
+				// 算出总数
+				var total = 0;
+				for (var i = 0; i < data.length; i++) {
+					total += data[i];
+				}
+				var ratio = 360/total;
+
+				var preAngle = 0;
+
+				this.data.forEach(function(val,i) {
+					ctx.beginPath();
+					ctx.moveTo(self.x, self.y);
+					ctx.arc(self.x,self.y,self.r,angle2Radian(preAngle),angle2Radian(val*ratio+preAngle));
+					preAngle += val*ratio;
+					// console.log(preAngle);
+
+					// ctx.stroke();
+					// console.log(self.colors[i]);
+					ctx.fillStyle = self.colors[i];
+					ctx.fill();
+
+					// 绘制文字说明
+					// 求文字说明所在点的坐标
+					ctx.moveTo(self.x, self.y);
+					var extra = 20;
+					var lineAngle = preAngle-val*ratio/2;
+					var introX = self.x + (self.r+extra)*Math.cos(angle2Radian(lineAngle));
+					var introY = self.y + (self.r+extra)*Math.sin(angle2Radian(lineAngle));
+					ctx.lineTo(introX, introY);
+					ctx.stroke();
+					// 如果角度是90-270度之间文字应该显示在右边
+					if (lineAngle>90&&lineAngle<270) {
+						ctx.textAlign = 'right';
+					} else {
+						ctx.textAlign = 'left';
+					}
+					ctx.fillText(val, introX, introY);
+				})
+			}
+		}
+
+		var data = [10,50,60,40,15,90];
+		var p = new Pie(200,200,50,data);
+		p.draw();
+
+		
+		
+	</script>
+</body>
+</html>

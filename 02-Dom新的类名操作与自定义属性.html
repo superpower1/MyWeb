@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		div {
+			width: 100px;
+			height: 100px;
+			background-color: black;
+		} 
+		.red {
+			background-color: red;
+		}
+	</style>
+	<script>
+		window.onload = function() {
+			var box = document.querySelector("div");
+			//类名添加
+			box.classList.add("red");
+			//类名删除
+			box.classList.remove("red");
+			//判断是否包含某类名
+			console.log(box.classList.contains("red"));
+			//toggle切换
+			box.onclick = function () {
+				box.classList.toggle("red");
+			}
+
+			//修改和获取自定义属性
+			box.dataset["sex"] = "man";
+			console.log(box.dataset["sex"]);
+		}
+	</script>
+</head>
+<body>
+	<!-- 在html5里自定义属性必须以data-开头 -->
+	<div data-name="sp1"></div>
+</body>
+</html>

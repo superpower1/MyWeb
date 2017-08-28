@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		// 用缓存解决迭代法求斐波那契数列的性能问题
+
+		// 基本方法：
+		// function fib(n) {
+		// 	if (n<=2) {
+		// 		return 1;
+		// 	}
+		// 	return fib(n-1) + fib(n-2);
+		// }
+
+		function createFib() {
+			// 用数组来储存计算结果，如果数组里已有对应值则无需再计算直接调用
+			var cache = [];
+			function fib(n) {
+				if (cache[n] !== undefined) {
+					return cache[n];
+				} else {
+					if (n<=2) {
+						cache[n] = 1;
+						return 1;
+					}
+					var temp = fib(n-1) + fib(n-2);
+					cache[n] = temp;
+					return temp;
+				}	
+			}
+			return fib;
+		}
+
+		var newFib = createFib();
+		console.log(newFib(20));
+
+		// 自己封装缓存
+		function createCache() {
+			var cache = {};
+			// 用index数组去存储key值，以便缓存超过一定值之后根据key的存入先后顺序删除最先存进去的数值
+			var index = [];
+			return function(key, value) {
+				if (value !== undefined) {
+					cache[key] = value;
+					index.push(key);
+
+					// 如果超出一定值删除最早存进去的值，也就是数组的第一个key对应的值
+					if (index.length >= 50) {
+						// push尾部加入,pop尾部取出,shift头部取出,unshift头部加入
+						var tempKey = index.shift();
+						delete cache[tempKey];
+					} 
+				} 					
+				return cache[key];				
+			}
+		}
+
+		// 为了应对高并发而产生的非关系型数据库（内存型数据库）MongoDB，Redis
+	</script>
+</body>
+</html>

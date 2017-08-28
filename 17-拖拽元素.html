@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.box1 {
+			width: 100px;
+			height: 100px;
+			border: 1px solid #000;
+			background-color: red;
+		}
+		.box2 {
+			width: 400px;
+			height: 400px;
+			position: relative;
+			left: 500px;
+			top: 100px;
+			border: 1px solid #000;
+			background-color: blue;
+		}
+	</style>
+</head>
+<body>
+	<div class="box1" draggable="true"></div>
+	<div class="box2"></div>
+
+	<script>
+		var box1 = document.querySelector(".box1");
+		var box2 = document.querySelector(".box2");
+
+		
+		// 按下后移动触发
+		box1.ondragstart = function () {
+			console.log('strat dragging');
+		}
+		// 鼠标按下后连续触发
+		box1.ondrag = function () {
+			console.log('mouse on');
+		}
+		// 鼠标离开原本元素位置时触发
+		box1.ondragleave = function () {
+			console.log('leave');
+		}
+		// 拖拽结束时触发
+		box1.ondragend = function () {
+			console.log('end');
+		}
+
+		// 鼠标进入目标元素时触发
+		box2.ondragenter = function () {
+			console.log('mouse enter');
+		}
+		// 鼠标离开目标元素时触发
+		box2.ondragleave = function () {
+			console.log('mouse leave');
+		}
+		// 鼠标在目标元素上时连续触发
+		// 默认不能把元素放到其他元素中
+		box2.ondragover = function (event) {
+			event.preventDefault(); 
+			console.log('mouse over');
+		}
+		// 鼠标在目标元素上放开时触发
+		box2.ondrop = function () {
+			console.log('drop');
+		}
+	</script>
+</body>
+</html>

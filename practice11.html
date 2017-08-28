@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>practice11</title>
+	<style>
+		body{
+			margin: 0;
+			padding: 0;
+		}
+		.box {
+			height: 100px;
+			width: 100px;
+			background-color: pink;
+			position: relative;
+			left: 50px;
+			top: 50px;
+			padding: 50px;
+		}
+		.box2 {
+			height: 50px;
+			width: 50px;
+			position: absolute;
+			background-color: red;
+			left: 0;
+			top: 0;
+		}
+	</style>
+</head>
+<body>
+	<input type="button" value="Move1">
+	<input type="button" value="Move2">
+	<input type="button" value="Move3">
+	<div class="box">
+		<div class="box2"></div>
+	</div>
+</body>
+<script>
+	var box = document.getElementsByClassName("box")[0];
+	var box2 = document.getElementsByClassName("box2")[0];
+	//offset以父元素的padding开始算，border不算，
+	//父元素没有定位则以body为准，在父元素有定位的情况下，offsetLeft == style.left（去掉px）
+	//offsetLeft只读，style.left可读写
+
+	console.log(box2.offsetLeft);
+	console.log(box.offsetLeft);
+
+	var btn = document.getElementsByTagName("input");
+	
+	btn[0].onclick = function () {
+		moveHS(box2,200);	
+	}
+	btn[1].onclick = function () {
+		moveH(box,200);	
+	}
+	btn[2].onclick = function () {
+		moveHS(box2,400);
+	}
+
+	function moveH (box, x) {
+		//使用定时器之前先清空定时器
+		//一个元素只能有一个定时器，这样不会出现定时器冲突
+		clearInterval(box.timer);
+
+		if (box.offsetLeft > x) speed = -10;
+		else speed = 10;
+		box.timer = setInterval(function() {
+			box.style.left = box.offsetLeft + speed + "px";
+			if (Math.abs(box.offsetLeft-x)<=10) {
+				box.style.left = x + "px";
+				clearInterval(box.timer);
+			}
+		}, 100);
+	}
+
+	function moveHS (box, x) {
+		//使用定时器之前先清空定时器
+		//一个元素只能有一个定时器，这样不会出现定时器冲突
+		clearInterval(box.timer);
+
+		box.timer = setInterval(function() {
+			var step = (x - box.offsetLeft)/10;
+			if (step>0) {
+				step = Math.ceil(step);
+			}
+			else step = Math.floor(step);
+			box.style.left = box.offsetLeft + step + "px";
+			//offset取值四舍五入
+			if (Math.abs(box.offsetLeft-x) < Math.abs(step)) {
+				box.style.left = x + "px";
+				clearInterval(box.timer);
+			}
+		}, 100);
+	}
+
+</script>
+</html>

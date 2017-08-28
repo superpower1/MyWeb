@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.loadMore {
+			width: 100%;
+		}
+		.loadMore>p{
+			width: 200px;
+			height: 30px;
+			background-color: skyblue;
+			color: ghostwhite;
+			text-align: center;
+			line-height: 30px;
+			margin: 0 auto;
+			cursor: pointer;
+		}
+		.items {
+			position: relative;
+		}
+		.imgBox {
+			width: 300px;
+			/*overflow: hidden;*/
+			/*float: left;*/
+			position: absolute;
+		}
+		.imgBox img {
+			width: 100%;
+			height: auto;
+			display: block;
+		}
+		
+	</style>
+</head>
+<body>
+	<div class="loadMore">
+		<div class="items"></div>
+		<p>加载更多</p>
+	</div>
+
+	<script src="javascript/jquery.min.js"></script>
+	<script src="javascript/jquery.myPlugIn.js"></script>
+
+	<!-- 导入模板引擎 -->
+	<script src="javascript/template-native.js"></script>
+	<script type='text/template' id='template'>
+		<%for(var i=0; i<items.length; i++){%>
+			<div class="imgBox">
+				<img src="<%=items[i].path%>" alt="">
+				<p><%=items[i].text%></p>
+			</div>		
+		<%}%>
+	</script>
+	
+
+	<script>
+		// 使用自己封装的jq插件
+		// $('body').myPlugIn();
+		// $.myPlugIn();
+
+		$(function () {
+			$('.loadMore p').on('click', function () {
+				$.ajax({
+					url: '30-waterfall.php',
+					dataType: 'json',
+					success: function(data) {
+						console.log(data);
+						// 由于设了dataType是json所以返回的data自动调用了JSON.parse(data)
+						// 模板引擎不支持直接传数组，所以包装成js对象
+						var obj ={
+							items:data
+						}
+						// 第一个参数是id，第二个参数是对象
+						var str = template('template', obj);
+						// console.log(str);
+						$('.items').append(str).css('opacity',0);
+
+						// 调用自己封装的waterfall插件
+						setTimeout("$('.items').myPlugIn().css('opacity',1)", 20);
+						
+					}
+				})
+			})
+		})
+		
+	</script>
+</body>
+</html>

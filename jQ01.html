@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jQ01</title>
+
+	<script src="jquery-1.11.1.js"></script>
+	<style>
+		div {
+			width: 100px;
+			height: 100px;
+			background-color: grey;
+			margin: 10px;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<input type="button" value="click">
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+
+	<script>
+		$(document).ready(function() {
+			var btn = $("input"); //根据标签名获取元素
+			var div = $("div");
+			//绑定事件
+			btn.click(function() {
+				div.show();
+				div.html("hello");
+			});
+		});
+
+		
+		// jQuery的入口函数可以出现多次，不会存在时间覆盖的问题
+		//入口函数1:在页面和图片都加载完毕之后执行
+		// $(window).ready(function() {
+		// });
+		// 入口函数2:在页面加载完执行，图片没加载也可以
+		// $(function() {
+		// });
+		
+
+	</script>
+</body>
+</html>

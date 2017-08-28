@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		.info {
+			width: 500px;
+			height: 100px;
+			margin: 0 auto;
+			border: 1px solid #000;
+			/*display: none;*/
+		}
+	</style>
+</head>
+<body>
+	<img src="#" alt="">
+	<div class="info"></div>
+	<input type="text" placeholder="please input the name of pic">
+	<button>get</button>
+	<script>
+		document.querySelector('button').onclick = function () {
+			var ajax = new XMLHttpRequest();
+
+			var picName = document.querySelector('input').value;
+
+			ajax.open('get','23-readxml.php');
+			ajax.send();
+			ajax.onreadystatechange = function () {
+				if(ajax.readyState==4 && ajax.status==200){
+					// 异步对象中有专门获取xml的属性
+					// xml对象在浏览器端就是一个document对象，可以用getElementsByTagName(name)或者querySelector(selectors)获取xml里的值
+					// console.log(ajax.responseXML);
+					console.log(picName);
+					var imgUrl = ajax.responseXML.querySelector(picName).querySelector('url').innerHTML;
+					var info = ajax.responseXML.querySelector(picName).querySelector('info').innerHTML;
+					document.querySelector('img').src = imgUrl;
+					document.querySelector('.info').innerHTML = info;
+				}
+			}
+		}
+	</script>
+</body>
+</html>

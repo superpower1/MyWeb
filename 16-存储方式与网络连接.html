@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" manifest="01.appcache">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="text">
+	<button>存储</button>
+	<button>恢复</button>
+	<script>
+		var txt = document.querySelector("input");
+		var btn = document.querySelectorAll("button");
+		btn[0].onclick = function () {
+			// sessionStorage会话存储有效期到页面关闭
+			// 通过setItem(键,值)来存储
+			window.sessionStorage.setItem('userName', txt.value);
+			// localStorage可以永久保存于本地
+			// window.localStorage.setItem('userName', txt.value);
+		}
+		btn[1].onclick = function () {
+			// getItem来获取
+			txt.value = window.sessionStorage.getItem('userName');
+		}
+
+		// 网络连接事件
+		window.addEventListener('online', function() {
+			alert('You are now connected to Internet!');
+		});
+		window.addEventListener('offline', function() {
+			alert('Your Internet is disconnected!');
+		});
+	</script>
+</body>
+</html>

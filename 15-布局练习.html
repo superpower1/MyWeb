@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.section {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.box {
+			width: 100px;
+			height: 100px;
+			background-color: lightgrey;
+			
+		}
+		.current .box{
+			/*将transition写在current里可以快速回到初始状态*/
+			transition: all 1s;
+			transform: translate(500px);
+		}
+		
+	</style>
+
+	<script src="javascript/jquery.min.js"></script>
+	<script src="javascript/jquery.fullPage.min.js"></script>
+	<script>
+		$(function () {
+			$('#mainbody').fullpage({
+				sectionsColor: ['pink', 'orange', 'lightblue'],
+				afterLoad: function (anchorLink, index) {
+					$('.section').removeClass('current');
+
+					setTimeout(function () {
+						$('.section').eq(index-1).addClass('current');
+					}, 100);
+				}
+			});
+		})
+	</script>
+</head>
+<body>
+	<div id="mainbody">
+
+		<div class="section p1">
+			<div class="box">1</div>
+		</div>
+		<div class="section p2">
+			<div class="box">2</div>
+		</div>
+		<div class="section p3">
+			<div class="box">3</div>
+		</div>
+	</div>
+</body>
+</html>

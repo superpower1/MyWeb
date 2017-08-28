@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<!-- 內嵌css樣式 -->
+	<style type="text/css">
+		p {
+			/*設置前景色*/
+			color: blue;
+			/*設置背景色*/
+			background-color: grey;
+		}
+		ul {
+			color: red;
+			background-color: grey;
+		}
+	</style>
+	<!-- 外聯css樣式 -->
+	<link rel="stylesheet" href="css/main.css">
+
+</head>
+
+<body>
+	<!-- 所有標籤都有name，id，style -->
+	<!-- sytle屬性可以設置多條css樣式 -->
+	<!-- 行內css樣式 -->
+	<h1 style="color: red; font-size: 60px;"><span class="skyblue">我是</span>標題</h1>
+	<!-- emmate語法 -->
+	ul>li*3>a[href="#"]
+	<ul>
+		<li><a href="#">北京</a></li>
+		<li><a href="#">上海</a></li>
+		<li><a href="#">廣州</a></li>
+		<li class="web">紐約</li>
+	</ul>
+	<!-- 一個頁面中的id是唯一的，只允許以字母開頭，包括字母，下劃線和數字，且不能出現標籤名 -->
+	<p id="p1">我是段落1</p>
+	<p id="p2">我是段落2</p>
+	<p class="web">我是另一段</p>
+
+	<ul>
+		<li><a href="#">阿德莱德</a></li>
+		<li><a href="#">悉尼</a></li>
+		<li><a href="#">墨尔本</a></li>
+		<li class="web">波士顿</li>
+	</ul>
+</body>
+</html>

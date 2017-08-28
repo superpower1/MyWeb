@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		div {
+			width: 200px;
+			height: 200px;
+			background-color: rgba(255, 0, 0, 0.5);
+			
+			/*动画名称*/
+			animation-name: move;
+			/*持续时间*/
+			animation-duration: 1s;
+			/*动画名称和持续时间是必须的且顺序不能变*/
+			/*执行次数，infinite无限*/
+			animation-iteration-count: 3;
+			/*动画方向：normal正常，alternate往返*/
+			animation-direction: alternate;
+			/*延迟执行*/
+			animation-delay: 1s;
+			/*设置动画结束状态：forwards保持动画结束后的状态，backwards回到初始状态*/
+			animation-fill-mode: backwards;
+			/*运动曲线：linear，ease等*/
+			/*steps()设置用多少帧完成动画*/
+			animation-timing-function: steps(60);
+
+		}
+
+		@keyframes move {
+			/*可以用百分比实现多段动画*/
+			from{
+				/*rotate和translate的顺序会影响动画*/
+				transform: translate(0, 0) rotate(0deg) ;
+			}
+			to{
+				transform: translate(500px, 500px) rotate(360deg);
+			}
+		}
+	</style>
+</head>
+<body>
+	<div></div>
+</body>
+</html>

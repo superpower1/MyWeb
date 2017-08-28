@@ -1,0 +1,41 @@
+.container {
+	width: 100%;
+	
+}
+
+.header {
+	height: 40px;
+	width: 100%;
+	background-color: rgba(255,0,0,0.85);
+	position: relative;
+	/* 设置padding把search挤进去 */
+	padding-left: 70px;
+	padding-right: 70px;
+}
+
+.header .header_logo{
+	width: 60px;
+	height: 36px;
+	position: absolute;
+	left: 5px;
+	top: 2px;
+
+	/* background-image: url(images/); */
+	
+}
+
+.header .header_search{
+	width: 100%;
+	height: 30px;
+	margin-top: 5px;
+	border-radius: 15px;
+}
+
+.header .header_login{
+	position: absolute;
+	right: 10px;
+	top: 0;
+	line-height: 40px;
+	color: white;
+	font-size: 17px;
+}

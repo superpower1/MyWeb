@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="javascript/jquery-3.2.1.slim.js"></script>
+</head>
+<body>
+	<div>1</div>
+	<div>2</div>
+	<div>3</div>
+	<script>
+		$.each($('div'), function(i, val) {
+
+			$(val).css('color','red');
+			if (i==1) {return false;}
+		
+		});
+
+
+
+	</script>
+</body>
+</html>

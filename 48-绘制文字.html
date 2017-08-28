@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas width="500" height="500"></canvas>
+	<script>
+		var cvs = document.getElementsByTagName('canvas')[0];
+		var ctx = cvs.getContext('2d');
+
+		ctx.font = '50px 微软雅黑';
+
+		// strokeText(文字内容, 显示位置x, 显示位置y [, 限制长度])
+		ctx.strokeText('私が来た!', 100, 100);
+		ctx.fillText('Here I come!', 100, 200);
+	</script>
+</body>
+</html>

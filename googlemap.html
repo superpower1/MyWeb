@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>googlemap</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    #map {
+        width: 500px;
+        height: 500px;
+        position: relative;
+    }
+    #location {
+        position: absolute;
+        left: 50%;
+        top: 55%;
+    }
+    #location a {
+        text-decoration: none;
+        color: white;
+    }
+    .googlemap {
+        width: 100%;
+        height: 100%;
+    }
+    </style>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+    <!-- <script src="javascript/bootstrap.min.js"></script> -->
+    <script>
+    window.onload = function() {
+        var locationBtn = document.querySelector('#location');
+        var maplink = locationBtn.querySelector('a');
+
+        if (isPC()) {
+            maplink.href = "https://www.google.com.au/maps/place/Cross+Cultures/@-37.7964867,144.9651053,17z/data=!3m1!4b1!4m5!3m4!1s0x6ad642d611c8b9ef:0xd150bbfd85d3a5a1!8m2!3d-37.796491!4d144.967294?hl=en";
+        } else {
+            maplink.href = "geo:0,0?z=17&q=Cross+Cultures";
+        }
+
+        function isPC() {
+            var userAgentInfo = navigator.userAgent;
+            var Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone",
+                "iPad", "iPod"
+            ];
+            var flag = true;
+            for (var v = 0; v < Agents.length; v++) {
+                if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            return flag;
+        }
+    }
+    </script>
+</head>
+
+<body>
+    <div id="map">
+        <button type="button" class="btn btn-success" id="location"><a href="" >Find us!</a></button>
+        <iframe class='googlemap' frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=Cross%20Cultrues&key=AIzaSyC9_YN1loCTLcOn7hiQv3I1ZD5CPhpfheU" allowfullscreen></iframe>
+    </div>
+</body>
+
+</html>

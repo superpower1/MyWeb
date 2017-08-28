@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body,html {
+			height: 1000px;
+			/*background-image: url('img/img3.jpg');*/
+		}
+		div {
+			position: absolute;
+			top: 500px;
+			width: 100%;
+			height: 300px;
+			border: 1px solid #000;
+			background-image: url('img/meeting.jpg');
+			/*background-position: 50% 500px; */
+		}
+	</style>
+	<script>
+		window.onload = function () {
+			var div = document.querySelector('div');
+			var moveY = 0;
+			var origY = 500;
+			div.style.backgroundPosition = '0px '+origY+'px';
+			window.onscroll = function() {
+				var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+				moveY = scrollTop+origY;
+				div.style.backgroundPosition = '0px '+moveY+'px';
+				
+			}
+			
+		}
+	</script>
+</head>
+<body>
+	<div>
+		
+	</div>
+</body>
+</html>

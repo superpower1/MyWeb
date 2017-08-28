@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="jquery-1.11.1.js"></script>
+	<script>
+		//创建jq对象方法1:
+		$("<li>我是li</li>");
+
+		//方法2:
+		$("ul").html("<li>我是li</li>");
+
+		//添加
+		$(window).ready(function() {
+			
+			var newLi1 = $("<li>我是新的li1</li>");
+			var newLi2 = $("<li>我是新的li2</li>");
+			$("button").eq(0).click(function () {
+				//用append()在父元素末尾添加
+				//用prepend()在父元素开头添加	
+				// $("ul").prepend(newLi1);
+				// $("ul").append(newLi2);
+				//用before()和after()在该元素前后添加
+				$("li").eq(0).before(newLi1);
+				$("li").eq(0).after(newLi2);
+			});
+			
+
+			$("button").eq(1).click(function() {
+				$("ul").empty();
+			});
+
+			$("button").eq(2).click(function() {
+				//用remove()自杀
+				$("li").eq(0).remove();
+			});
+
+			$("button").eq(3).click(function() {
+				//用clone()复制
+				var newLi = $("li").eq(0).clone();
+				$("ul").prepend(newLi);
+			});
+		});
+	</script>
+</head>
+<body>
+	<button>创建li</button>
+	<button>删除所有li</button>
+	<button>删除第一个li</button>
+	<button>复制第一个li</button>
+	<ul>
+		<li>我是土著li</li>
+	</ul>
+</body>
+</html>

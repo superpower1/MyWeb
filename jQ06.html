@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="jquery-1.11.1.js"></script>
+	<style>
+		.redBorder {
+			border: 1px solid red;
+		}
+	</style>
+	<script>
+		$(function() {
+			$("button").eq(0).click(function(){
+				//用attr("属性名",属性值)绑定属性
+				$("input").eq(0).attr("class", "redBorder");
+
+				//form中的特殊属性用prop
+				$("input:checkbox").prop("checked",true);
+			});
+
+			$("button").eq(1).click(function(){
+				//用attr("属性名",属性值)绑定属性
+				$("input").eq(0).removeAttr("class");
+			});
+		});
+
+		$(function() {
+			$("#head").click(function(){
+				$("tbody input:checkbox").prop("checked",$(this).prop("checked"));
+			});
+
+			$("tbody input:checkbox").click(function () {
+				//当checked的数量和checkbox数量相等时将head中的勾打上
+				if($("tbody input:checked").length === $("tbody input:checkbox").length) {
+					$("#head").prop("checked", true);
+				}
+				else{
+					$("#head").prop("checked", false);
+				}
+			});
+		});
+
+		$(function(){
+			//val为标签中的value值
+			//$("div input").val("helloworld");
+
+			//$("div p").text("helloworld");
+
+			//$("div ul").html("<li>helloworld</li>");	
+
+			$("div button").click(function () {
+				var str = $("div input").val();
+				var arr = str.split("");
+				var tmp = "";
+				var num = 0;
+				var timer = null;
+
+				timer = setInterval(function(){
+					if(arr[num] === undefined) {
+						clearInterval(timer);
+					}
+					else {
+						tmp += arr[num];
+						$("div p").text(tmp);
+						num++;
+					}
+				} , 200);
+			});
+		});
+		
+	</script>
+</head>
+<body>
+	<button>绑定属性</button>
+	<button>移除属性</button>
+	<input type="text">
+	<input type="checkbox">
+
+	<table>
+		<thead>
+			<tr>
+				<td>名称</td>
+				<td>数值</td>
+				<td><input type="checkbox" id="head"></td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>张三</td>
+				<td>1</td>
+				<td><input type="checkbox"></td>
+			</tr>
+			<tr>
+				<td>李四</td>
+				<td>2</td>
+				<td><input type="checkbox"></td>
+			</tr>
+			<tr>
+				<td>王五</td>
+				<td>3</td>
+				<td><input type="checkbox"></td>
+			</tr>
+		</tbody>
+	</table>
+	<div>
+		<input type="text" value="">
+		<p></p>
+		<ul></ul>
+		<button>打印</button>
+	</div>
+</body>
+</html>

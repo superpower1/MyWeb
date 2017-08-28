@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="javascript/jquery-3.2.1.slim.js"></script>
+	<style>
+		div {
+			width: 100px;
+			height: 100px;
+			margin: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div index='0'>
+		<li>1</li>
+		<li>2</li>
+	</div>
+	<div index='1'></div>
+	<script>
+		/*
+		* 1. addClass 
+		* 2. removeClass
+		* 3. hasClass 只要有一个元素有就返回true
+		* 4. toggleClass
+		* 5. attr 设置或获取元素的属性节点值(attribute)
+		* 6. prop 设置或获取元素的属性值(property)
+		* 7. val 设置或获取元素的value值
+		* 8. css
+		*/
+
+		// 测试attr
+		// 传入两个参数是修改,返回值是这个jq对象
+		console.log($('div').attr('index', 1));
+		// 传入一个参数是读取，返回第一个div的属性节点值
+		console.log($('div').attr('index'));
+		// 传入对象可以批量修改,返回值是这个jq对象
+		console.log($('div').attr({
+			a: '0',
+			b: '1',
+			c: '2',
+		}));
+
+		// 测试prop		
+		// 传入两个参数是修改,返回值是这个jq对象
+		console.log($('div').prop('index', 1));
+		// 传入一个参数是读取，返回第一个div的属性值
+		console.log($('div').prop('index'));
+		// 传入对象可以批量修改,返回值是这个jq对象
+		console.log($('div').prop({
+			a: '0',
+			b: '1',
+			c: '2',
+		}));
+
+		// 测试css		
+		// 传入两个参数是修改,返回值是这个jq对象
+		console.log($('div').css('backgroundColor', 'blue'));
+		// 传入一个参数是读取，返回第一个div的css属性，输入backgroundColor与background-color均可
+		console.log($('div').css('background-color'));
+		// 传入对象可以批量修改css属性,返回值是这个jq对象,数值可以加引号也可以不加引号，写不写px无所谓
+		console.log($('div').css({
+			'width': '200px',
+			'height': '200',		
+		}));
+
+
+
+	</script>
+</body>
+</html>

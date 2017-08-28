@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="myCvs" width="500px" height="500px"></canvas>
+	<script>
+		var cvs = document.getElementById('myCvs');
+		// 获取2d绘图环境
+		var ctx = cvs.getContext('2d');
+		// 可获取3d绘图环境
+		// var ctx = cvs.getContext('webgl');
+		// 颜色的设置必须放在绘制stroke()之前
+		ctx.strokeStyle = 'red';
+		ctx.lineWidth = 10;
+
+		// 画一个等腰三角形吧
+		ctx.moveTo(100, 100);
+		ctx.lineTo(150, 150);
+		ctx.lineTo(50, 150);
+
+		// 解决锯齿
+		ctx.closePath();
+		ctx.stroke();
+
+		function rectangle1(x, y, w, h, lineWidth, color) {
+			// var ctx = cvs.getContext('2d');
+			ctx.beginPath();
+
+			ctx.moveTo(x, y);
+			ctx.lineTo(x+w, y);
+			ctx.lineTo(x+w, y+h);
+			ctx.lineTo(x, y+h);
+			ctx.closePath();
+
+			ctx.lineWidth = lineWidth;
+			ctx.strokeStyle = color;
+			ctx.stroke();
+			ctx.fillStyle="red";
+			ctx.fill();
+		}
+
+		rectangle1(50,50,100,100,1,'blue');
+
+		ctx.fillStyle = 'yellow';
+
+		// 生成填充矩形，不产生路径
+		ctx.fillRect(200,200,100,100);
+		// 生成线框矩形，不产生路径
+		ctx.strokeRect(200,400,100,100);
+
+
+
+		// 将画布转换为base64编码格式的图片，在网站中有少量小图片的时候可以考虑直接使用base64编码的图片
+		// 第一个参数默认是png，第二个参数在转化成jpeg或webp的时候用来控制质量（0-1），默认是0.92
+		console.log(cvs.toDataURL('image/jpeg', 0.1));
+
+	</script>
+</body>
+</html>

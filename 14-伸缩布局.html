@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body {
+			background-color: #eee;
+
+		}
+		section {
+			width: 1000px;
+		}
+
+		ul {
+			background-color: #fff;
+			margin: 20px;
+			list-style: none;
+			padding: 0;
+			height: 500px;
+
+			/*设置伸缩布局*/
+			display: flex;
+			/*设置主轴方向（主轴默认从左到右）*/
+			/*row默认，row-reverse水平反转，column竖直方向从上到下，column-reverse竖直反转*/
+			flex-direction: row-reverse;
+			/*主轴对齐方式*/
+			/*flex-start沿着主轴正方向对齐，center居中对齐，flex-end沿着主轴反方向对齐*/
+			/*space-around平分空间，space-between两端对齐中间平分*/
+			justify-content: space-between;
+			/*侧轴方向默认从上到下*/
+			/*侧轴对齐方式，参数与主轴对齐方式类似，特别的baseline，stretch拉伸*/
+			align-items: center;
+
+		}
+
+		ul li {
+			width: 200px;
+			height: 200px;
+
+			background-color: pink;
+			margin: 10px;
+		
+		}
+		
+		/*可以通过给每个子元素设定flex值控制它们的占比（主轴方向）*/
+		ul li:nth-child(1) {
+			flex: 1;
+		}
+		ul li:nth-child(2) {
+			flex: 2;
+		}
+		ul li:nth-child(3) {
+			flex: 1;
+		}
+	</style>
+</head>
+<body>
+	<section>
+		<h3>伸缩布局</h3>
+		<ul>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+		</ul>
+	</section>
+</body>
+</html>

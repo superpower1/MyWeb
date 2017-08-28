@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		var stu = [
+			{
+				name: 'json',
+				age: 19,
+			},
+			{
+				name: 'emma',
+				age: 15,
+			},
+		];
+
+		// 增
+		stu.push({
+			name: 'lisa',
+			age: 17,
+		});
+		// 删
+		for (var i = 0; i < stu.length; i++) {
+			var s = stu[i];
+			if(s.name == 'json'){
+				// splice(索引，删几个)
+				stu.splice(i,1);
+			}
+		}
+		// 改
+		for (var i = 0; i < stu.length; i++) {
+			var s = stu[i];
+			if(s.name == 'lisa'){
+				s.age = 20;
+			}
+		}
+		// 查
+		for (var i = 0; i < stu.length; i++) {
+			var s = stu[i];
+			if(s.name == 'emma'){
+				console.log(s);
+			}
+		}
+		console.log(stu);
+	</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		function func1() {
+			var num = 1;
+			return function(arg) {
+				if (arg != undefined) {
+					num = arg;
+				} else {
+					return num;
+				}
+
+			}
+		}
+
+		// 在函数外获取和修改函数内的num值
+		var temp = func1();
+		temp(123);
+		console.log(temp());
+
+		// 返回多个值
+		function func2() {
+			var name = 'sp1';
+			var age = 18;
+			return {
+				getName: function() {
+					return name;
+				},
+				getAge: function() {
+					return age;
+				},
+				setName: function(arg) {
+					name = arg;
+					return name;
+				},
+				setAge: function(arg) {
+					// 闭包可以在传参的时候进行校验以保证数据的可靠性
+					if (arg<0) {
+						throw 'error!';
+					}
+					age = arg;
+					return age;
+				},
+			}
+		}
+
+		var obj = func2();
+		obj.setName('sp2');
+		obj.setAge(-1);
+		console.log(obj.getName()+' '+obj.getAge());
+
+	</script>
+</body>
+</html>

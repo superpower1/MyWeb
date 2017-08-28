@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		// 三种方式创建函数：
+		// 1.
+		var funcName = function() {};
+		// 2.
+		function funcName() {}
+		// 3.可以传入多个参数，最后一个是函数体前面的都是函数名
+		var funcName = new Function('var1','var2','body');
+		// 例如：
+		var print = new Function('var1', 'console.log(var1);');
+		print('I am Batman');
+
+		// 函数内部自带arguments的数组对象，系统将所有传入的实参依次传入这个对象
+		function max() {
+			var maxNum = arguments[0];
+			for (var i = 0; i < arguments.length; i++) {
+				if (arguments[i]>maxNum) {
+					maxNum = arguments[i];
+				}
+			}
+			return maxNum;
+		}
+		console.log(max(1,2,3));
+
+		// eval()可以将字符串转化为Js代码并运行
+		var str = 'var a=10';
+		eval(str);
+		console.log(a);
+		// 可以利用这个方法转换json格式的字符串数据
+		var jsonData = '{"name":"sp1", "age":19}';
+		eval('var jsonObj = '+jsonData);
+		console.log(jsonObj);
+
+		// 然而，处于安全考虑并不推荐使用eval
+
+		// 静态成员：构造函数里属性和方法，比如prototype
+		// 实例成员：实例的属性和方法
+		// 一般把工具方法作为静态成员，而和对象相关的方法作为实例成员
+
+		// obj.prototype的成员：
+		// 1.constructor 获取与原型相关联的构造函数
+		// 2.__proto__ 获取对象的原型（测试用）
+		// 3.hasOwnProperty(property) 判读对象本身是否拥有某个属性（而不是继承自原型的属性）
+		// 4.obj1.isPrototypeOf(obj2) 判断obj1是否是obj2的原型
+		// 5.toString()/toLocaleString() 将对象转换成字符串/将对象转换成本地格式的字符串
+		// 6.valueOf() 在参与运算时会先调用valueOf()，如果无法计算则用toSting()做字符串拼接
+		// 7.propertyIsEnumerable(prop) 判断属性是否能遍历到,自己添加的方法可以遍历到，而对象自带的一些成员就无法遍历到，比如__proto__属性
+
+		var time = new Date;
+		console.log(time.toString());
+		console.log(time.toLocaleString());
+
+		var obj = {name:'json',age:18,};
+		var son = Object.create(obj);
+		son.valueOf = function() {return 1;};
+		console.log(son.hasOwnProperty('name'));
+		console.log(son.toString);
+
+		console.log(son.propertyIsEnumerable('toString'));
+
+		// Function和eval都可以将字符串转换成js代码，不同点在于：
+		// Function创建出来的函数不会直接调用，而eval把字符串转换成代码后直接运行
+
+		// Function也可以当作构造函数，通过Function new创建的函数可以被当作实例化对象
+
+		function test(a,b) {
+			console.log(arguments);
+			// arguments.length 返回数组长度
+			// arguments.callee(); 自调用，指向函数本身
+			return a+b;
+		}
+		// 这样是不会报错的
+		console.log(test(1,2,3,4,5));
+
+
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>practice08</title>
+</head>
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+	}
+	.box {
+		width: 300px;
+		margin: 200px auto;
+	}
+	.content {
+		width: 200px;
+		border: 1px solid grey;
+	}
+	ul {
+		width: 190px;
+		padding: 5px;
+		border-bottom: 1px solid grey;
+		border-left: 1px solid grey;
+		border-right: 1px solid grey;
+		list-style:none;
+	}
+	li:hover {
+		background-color: silver;
+
+	}
+
+</style>
+<body>
+	<div class="box">
+		<input class="content" type="text" name="">
+		<input class="search" type="button" name="" value="Go">
+	<!-- 	<ul>
+			<li>a</li>
+			<li>aa</li>
+			<li>aaa</li>
+			<li>aaaa</li>
+			<li>aaaaa</li>
+		</ul> -->
+	</div>
+
+
+<script>
+	var box = document.getElementsByClassName("box")[0];
+	var input = box.getElementsByClassName("content")[0];
+	var ul = box.getElementsByTagName("ul")[0];
+	var arr = ["a","ab","abc","ad","b","ba","cba","ac"];
+	//输入事件:键盘弹起onkeyup
+	input.onkeyup = function () {
+		//如果已经有ul存在了就要先删除
+		if (box.children[2]) {
+			box.removeChild(box.children[2]);
+		}
+
+		var ul = document.createElement("ul");
+		//遍历arr数组中以input内容为开头的元素放入新数组newArr
+		var newArr = [];
+		for (var i = 0; i < arr.length; i++) {
+			//a.indexOf(b)用来判断字符串b在字符串a中的位置，如果值是0表示a是以b开头，如果不存在返回-1
+			if (arr[i].indexOf(this.value) === 0) {
+				newArr.push("<li>"+arr[i]+"</li>");
+			}
+		}
+		//将数组转换成字符串
+		str = newArr.join("");
+		//如果没有任何符合的元素或者输入的内容是空的话则不生成ul
+		if (str.length > 0 && this.value) {
+			ul.innerHTML = str;
+			box.appendChild(ul);
+		}
+		
+	}
+	//以下返回值为3
+	console.log("abcac".indexOf("ac"));
+
+</script>
+
+</body>
+</html>

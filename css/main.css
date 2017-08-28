@@ -1,0 +1,46 @@
+/*
+* author: sp1
+* description:
+* date:
+*/
+
+* {
+	font-size: 20px;
+	// 外邊距
+	margin: 0;
+	// 內邊距
+	padding: 0;
+}
+
+a {
+	color: yellow;
+}
+// id選擇標籤
+#p1 {
+	font-size: 30px;
+}
+#p2 {
+	font-size: 10px;
+}
+// class選擇標籤
+.web {
+	font-size: 30px;
+	color: white;
+	background-color: black;
+}
+/*
+id選擇器與class選擇器的區別：
+1. 相同的class屬性值可以在一個頁面中重複多次，id只能出現一次
+2. 一個標籤可以有多個class
+*/ 
+
+.skyblue {
+	color: #66ccff;
+	font-size: 50px;
+}
+
+// 复合选择器
+li.web {
+	color: #66ccff;
+	font-size: 40px;
+}

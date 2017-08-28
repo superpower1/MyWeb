@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.content {
+			width: 500px;
+			height: 500px;
+
+		}
+	</style>
+</head>
+<body ng-app='App'>
+	<div>
+		<ul>
+			<li><a href="#/index">Main</a></li>
+			<li><a href="#/intro">Introduction</a></li>
+			<li><a href="#/intro/5/page/3">Introduction 5-3</a></li>
+			<li><a href="#/contact">Contact</a></li>
+		</ul>
+	</div>
+	<div class="content">
+		<div ng-view></div>
+	</div>
+
+	<script src="javascript/angular.min.js"></script>
+	<!-- 引入angular的路由模块 -->
+	<script src="javascript/angular-route.js"></script>
+	<script>
+		// hashchange事件可以监听锚点是否改变， angular底层就是用的这个
+
+		// 依赖路由模块
+		var App = angular.module('App', ['ngRoute']);
+		
+		App.config(['$routeProvider', function ($routeProvider) {
+			// 第一参数是hash值，第二个参数是设置配置参数的对象
+			$routeProvider.when('/index', {
+				template: '<h1>Main Page</h1>'
+			})
+			.when('/intro', {
+				// template: '<h1>Introduction Page</h1>'
+				// 如果内容多了可以将其写在另一个文件，用templateUrl加载
+				templateUrl: 'intro.html',
+				controller: 'introCtrl'
+			})
+			.when('/intro/:id/page/:p', {
+				template: '<h1>Sub Intro Page</h1>',
+				controller: 'introCtrl'
+			})
+			.when('/contact', {
+				template: '<h1>Contact Page</h1>'
+			})
+			.otherwise({
+				redirectTo: '/index'
+			});
+
+		}]);
+
+		App.controller('introCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+
+			$http({
+				url: '24-readjson.php'
+			}).success(function(info) {
+				$scope.items = info;
+			});
+
+			// $routeParams是保存参数的对象，参数有两种方式传入：
+			// 1. 通过#/intro/5/page/3，5就是id，3就是p
+			// 2. 通过#/intro?name=sp1&age=10
+			console.log($routeParams);
+		}]);
+	</script>
+</body>
+</html>

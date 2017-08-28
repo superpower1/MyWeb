@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Colors</title>
+	<style>
+		div {
+			width: 500px;
+			height: 500px;
+			border: 2px solid black;
+			margin: 10px auto;
+		}
+		ul {
+			padding:0;
+			width: 300px;
+			margin: 10px auto;
+			text-align: center;
+		}
+		li {
+			list-style: none;
+			display: inline-block;
+			font-size: 50px;
+			cursor: pointer;
+		}
+	</style>
+	<script src="jquery-1.11.1.js"></script>
+	<script>
+		var data = {
+			"pink":80,
+			"blue":66,
+			"orange":79,
+			"red":82,
+			"yellow":89,
+			"green":71,
+			"violet":86,
+			"cyan":67
+		};
+
+		$(function(){
+			$(document).on("keyup", function(e) {
+				// alert(e.keyCode);
+
+				var hasColor = false;
+				for (var key in data) {
+					// console.log(key);
+					// console.log(data[key]);
+					if(data[key] === e.keyCode){
+						$("div").css("background-color", key);
+						console.log(key);
+						hasColor = true;
+					}
+				}
+				if(hasColor === false){
+					alert("Color not found!");
+				}
+			});
+		});
+
+		$(function() {
+			var non = "☆";
+			var sel = "★";
+			$("li").on("mouseenter", function() {
+				//链式编程
+				$(this).text(sel).prevAll("li").text(sel).end().nextAll("li").text(non);
+			});
+			$("li").on("mouseleave", function() {
+				//离开时判断，点击的五角星之前的都变成实心,之后的都变成空心
+				//如果没有点击则清空所有五角星
+				if($("li.current").length === 0) {
+					$("li").text(non);
+				}
+				else{
+					$("li.current").text(sel).prevAll("li").text(sel).end().nextAll("li").text(non);
+				}
+				
+			});
+			$("li").on("click", function () {
+				$(this).addClass("current").siblings("li").removeClass("current");
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<ul>
+		<li>☆</li>
+		<li>☆</li>
+		<li>☆</li>
+		<li>☆</li>
+		<li>☆</li>
+	</ul>
+	<div></div>
+</body>
+</html>

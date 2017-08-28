@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body {
+			background-color: #eee;
+			/*perspective值越大，透视效果越弱，和盒子宽度相等的话打脸*/
+			/*perspective: 500px;*/
+		}
+		.box {
+			width: 300px;
+			height: 300px;
+			margin: 20px auto;
+			position: relative;
+			background-color: red;
+		}
+
+		.box::after, .box::before {
+			content: "";
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			transition: transform 1s;
+			transform-origin: right;
+		}
+
+		.box::before {
+			background-color: pink;
+
+		}
+
+		.box::after {
+			background-color: blue;
+			/*背面不显示*/
+			backface-visibility: hidden;
+		
+		}
+
+		.box:hover::after {
+			transform: rotateY(180deg);
+		}
+
+		.box:hover::before {
+			transform: rotateY(180deg);
+		}
+		
+		.flip {
+			width: 300px;
+			height: 300px;
+			background-color: pink;
+			margin: 20px auto;
+			position: relative;
+			/*border: 1px solid #000;*/
+		}
+
+		.flip::before, .flip::after {
+			content: "";
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			left: 0;
+			top: 0;
+
+			transform-origin: left center;
+			transform: scale(0.95, 1);
+			transition: all 1s;
+		}
+
+		.flip::after {
+			/*影子*/
+			z-index: 2;
+			background-color: rgba(0, 0, 0, 0.3);
+			/*box-shadow:5px 5px 5px rgba(0, 0, 0, 0.3);*/
+			
+			transform: rotateY(-15deg);
+		}
+
+		.flip::before {
+			/*最外层*/
+			z-index: 3;
+			background-color: white;
+		}
+
+		.flip:hover::before {
+			/*skew()倾斜*/
+			transform: rotateY(-40deg) skew(0deg, 5deg) scale(0.95, 1);
+		}
+
+		.flip:hover::after {
+
+			transform: rotateY(-20deg) skew(0deg, 10deg) scale(0.95, 1);
+		}
+
+	</style>
+</head>
+<body>
+	<!-- <div class="box"></div> -->
+	<div class="flip"></div>
+</body>
+</html>

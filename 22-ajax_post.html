@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.img {
+			/*width: 200px;
+			height: 200px;
+			margin: 0 auto;
+			border: 1px solid #000;*/
+			display: none;
+		}
+		.info {
+			width: 500px;
+			height: 100px;
+			margin: 0 auto;
+			border: 1px solid #000;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+		<h1>Sending...</h1>
+		<div class="img"><img src="#" alt=""></div>
+		<div class="info"></div>
+		<input type="text" id="txt">
+		<button>search</button>
+	<script>
+		var txt = document.querySelector('#txt');
+		var btn = document.querySelector('button');
+
+		btn.onclick = function() {
+			var ajax = new XMLHttpRequest();
+			ajax.open('post','22-ajax_post.php');
+			// post请求发动的数据写在send()方法中
+			// 如果要像HTMLform那样提交数据则使用setRequestHeader()来添加HTTP头
+			ajax.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+
+			// 格式name=jack&id=1;
+			ajax.send('name='+txt.value);
+			ajax.onreadystatechange = function () {
+				if(ajax.readyState==4 && ajax.status ==200) {
+					
+					var imgDiv = document.querySelector('.img');
+					var info = document.querySelector('.info');
+					var img = document.querySelector('img');
+					imgDiv.style.display = 'block';
+					info.style.display = 'block';
+
+					//返回的是字符串，需要进行分割处理
+					var getMsg = ajax.responseText;
+					var msgArr = getMsg.split('|');
+					
+					img.src = msgArr[0];
+					info.innerHTML = msgArr[1];
+
+					document.querySelector('h1').innerHTML = 'GET DAZE!';
+				}
+			}
+		}
+	</script>
+</body>
+</html>

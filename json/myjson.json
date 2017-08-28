@@ -1,0 +1,23 @@
+[
+	{
+		"name": "jack",
+		"age" : 20,
+		"gender" : "male",
+		"pic" : "img/logo_1.jpg"
+	},
+
+	{
+		"name": "rose",
+		"age" : 18,
+		"gender" : "female",
+		"pic" : "img/logo_2.jpg"
+	},
+
+	{
+		"name": "ben",
+		"age" : 5,
+		"gender" : "male",
+		"pic" : "img/logo_3.jpg"
+	}
+	
+]

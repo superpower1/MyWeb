@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		if(navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(successCallback,errorCallback);
+			
+		}
+		else {
+			alert('您的浏览器不支持地理定位');
+		}
+		function successCallback (position) {
+			console.log('位置获取成功！');
+			var la = position.coords.latitude;
+			var lo = position.coords.longitude;
+			console.log('纬度：'+la+' 经度：'+lo);
+		}
+		function errorCallback (error) {
+			console.log('位置获取失败！');
+		}
+	</script>
+</body>
+</html>

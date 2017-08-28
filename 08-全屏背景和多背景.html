@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		html,body {
+			height: 100%;
+		}
+		body {
+			
+			background: url(img/ygo.jpg) no-repeat center;
+
+			/*全屏背景自适应*/
+			background-size: cover;
+		}
+
+		.box1 {
+			width: 200px;
+			height: 200px;
+			border: 10px solid rgba(255, 255, 255, 0.3);
+			margin: 10px;
+			padding: 10px;
+			background: url(img/item_1.jpg) no-repeat;
+			/*控制背景的原点，默认是padding-box，可以改成border-box或content-box*/
+			background-origin: border-box;
+			/*背景裁剪*/
+			background-clip: content-box;
+		}
+		.box2 {
+			width: 160px;
+			height: 160px;
+			border: 10px solid rgba(255, 255, 255, 0.3);
+			margin: 10px;
+			background: url(img/logo_5.jpg) no-repeat center,
+				url(img/logo_1.jpg) no-repeat left top,
+				url(img/logo_2.jpg) no-repeat right top,
+				url(img/logo_3.jpg) no-repeat right bottom,
+				url(img/logo_4.jpg) no-repeat left bottom;
+
+		}
+	</style>
+</head>
+<body>
+	<div class="box1"></div>
+	<div class="box2"></div>
+</body>
+</html>

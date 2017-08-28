@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		// 如果在构造函数中定义定义函数，那每次创建对象时，都会重新创建这个函数。但是函数内部代码完全相同的情况下会浪费内存空间，这个时候可以在构造函数外定义这个函数
+		function study() {
+			console.log('I am '+this.name+', I love study');
+		}
+		// 构造函数
+		function Student(name) {
+			this.name = name;
+			this.study = study;
+		}
+
+		var stu = new Student('sp1');
+
+		stu.study();
+
+		// 但是这么做的话全局范围内会出现过多的函数，所以这里可以使用创建原型的方法来避免这种情况
+		// 原型是在系统解析到构造函数时就创建并关联的对象，原型的属性和方法可以被之后新创建出来的对象使用
+
+		// 给原型添加属性或方法
+		Student.prototype.eat = function() {
+			console.log('eat');
+		}
+		// 访问构造函数
+		console.log(Student.prototype);
+		// 修改对象的属性或方法时不会去管原型有没有，如果此对象没有就会新增，此时添加的与原型同名的属性或方法可以覆盖掉原型的相应值
+		stu.eat();
+		stu.eat = function() {
+			console.log('eat a lot');
+		}
+		stu.eat();
+
+		// 直接重新定义原型也可以，不过会覆盖掉之前定义的原型
+		// 在重新定义原型之前创建的对象保留原本的原型的各种属性和方法，而重新定义以后再创建的对象不会有旧原型的属性方法，取而代之的是新原型的属性方法，例如：
+		var stu1 = new Student;
+		Student.prototype = {
+			name: 'kid',
+			eat: function() {
+				console.log('eat till die');
+			}
+		}
+		// 这里的stu1依然保留原本原型的eat方法
+		stu1.eat();
+		// stu2则会使用新原型的eat方法
+		var stu2 = new Student;
+		stu2.eat();
+
+		// 一般情况下不会把属性放入原型之中，只会放公用的方法
+
+		// __proto__这个属性可以通过创建出来的实例去访问其对象的原型，但是它是一个非标准属性，为了保证通用性，这个属性只在测试代码中使用，不推荐在正式代码中使用
+		console.log(stu.__proto__);
+
+		// 创建原型的时候会自带一个constructor这个function，所以之后创建的实例都可以访问到这一方法
+		// 所以也可以这样创建使用stu原型的新对象stu3
+		var stu3 = new stu.constructor();
+
+		// 因此如果重新定义原型，为了合理性，应该保留constructor这个方法（手动添加），例如：
+		Student.prototype = {
+			name: 'Void',
+			eat: function() {
+				console.log('cannot eat');
+			},
+			// 保留这个方法
+			constructor: Student
+		}
+
+
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

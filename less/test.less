@@ -1,0 +1,68 @@
+// 这个注释不会出现在自动生成的css中
+
+/* 这个注释会出现在css中 */
+
+// 定义变量
+@red: rgb(255, 0, 0);
+// 定义class
+.red {
+    background-color: red;
+    border: 1px solid red;
+    color: red;
+}
+
+// 与其他语言的class类似，这里也可以给参数，red是默认值，在用.class()时使用默认
+.color(@color: red) {
+    background-color: @color;
+    border: 1px solid @color;
+    color: @color;
+}
+
+body {
+    background-color: @red;
+    // 调用class
+    // .red;
+    .color(orange);
+}
+
+// 嵌套的使用
+// 可以给父元素设置完样式之后给其子元素设置
+.father {
+    width: 100%;
+    .child {
+        width: 100%;
+        height: 100px;
+        ul {
+            text-align: center;
+            li {
+                color: black;
+            }
+        }
+        p {
+            font-size: 14px;
+        }
+    }
+}
+
+// 伪元素的使用
+.clearfix {
+    content: '';
+    display: block;
+    line-height: 0;
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}
+
+// 如果不加&的话生成的css是加了空格，也就是后代，加&可以去掉空格
+ul {
+    li {
+        width: 100px;
+        &.current {
+            color: red;
+        }
+        &::before {
+            .clearfix;
+        }
+    }
+}

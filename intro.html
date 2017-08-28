@@ -1,0 +1,17 @@
+
+<div>
+	<table>
+		<tr>
+			<td>Name</td>
+			<td>Age</td>
+			<td>Gender</td>
+			<td>Avatar</td>
+		</tr>
+		<tr ng-repeat='val in items'>
+			<td>{{val.name}}</td>
+			<td>{{val.age}}</td>
+			<td>{{val.gender}}</td>
+			<td><img ng-src="{{val.pic}}" alt=""></td>
+		</tr>
+	</table>
+</div>

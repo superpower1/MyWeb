@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>practice14</title>
+</head>
+<style>
+	.box {
+		width: 50px;
+		height: 50px;
+		position: absolute;
+		background-color: red;
+		left: 0;
+		top: 0;
+	}
+</style>
+<script src="javascript/animate.js"></script>
+<script>
+	window.onload = function () {
+		var timer = null;
+		var box = document.getElementsByTagName("div")[0];
+		document.onclick = function (event) {
+			event = event || window.event;
+			var pageX = event.pageX || scroll().left + event.clientLeft;
+			var pageY = event.pageY || scroll().top + event.clientTop;
+		
+			// box.style.left = pageX + "px";
+			// box.style.top = pageY + "px";
+
+			clearInterval(timer);
+			timer = setInterval(function() {
+				stepX = (pageX - box.offsetLeft)/10;
+				stepY = (pageY - box.offsetTop)/10;
+
+				stepX = stepX>0?Math.ceil(stepX):Math.floor(stepX);
+				stepY = stepY>0?Math.ceil(stepY):Math.floor(stepY);
+
+				box.style.left = box.offsetLeft + stepX + "px";
+				box.style.top = box.offsetTop + stepY + "px";
+				
+				if (Math.abs(pageX - box.offsetLeft)<Math.abs(stepX) && Math.abs(pageY - box.offsetTop)<Math.abs(stepY)) {
+					box.style.left = pageX;
+					box.style.top = pageY;
+					clearInterval(timer);
+				}
+			}, 20);
+		}
+	}
+	
+</script>
+<body>
+	<div class="box"></div>
+	
+</body>
+</html>

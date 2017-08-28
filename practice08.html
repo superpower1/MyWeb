@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.select {
+			width: 50px;
+			height: 200px;
+			font-size: 20px;
+		}
+
+
+
+	</style>
+</head>
+<body>
+	<ul>
+	    <li id="a">a</li>
+	    <li id="b">b</li>
+	</ul>
+
+	<select class="select" multiple="">
+		<option>火</option>
+		<option>水</option>
+		<option>風</option>
+		<option>土</option>
+		<option>光</option>
+		<option>暗</option>
+	</select>
+	<button>>>></button>
+	<button><<<</button>
+	<button>></button>
+	<button><</button>
+	<select class="select" multiple="">
+	
+	</select>
+
+	<script type="text/javascript">
+		//DOM元素的创建
+		//1.用document.write创建
+		document.write("<li>我是document.write创建的</li>");
+		//2.用innerHTML方法创建
+		var list = document.getElementsByTagName("ul")[0];
+		list.innerHTML += "<li>我是innerHTML创建的</li>";
+		//3.利用dom的api创建
+		var newLi = document.createElement("li");
+		newLi.innerHTML = "我是用createElement创建的";
+		// list.appendChild(newLi);
+		//指定位置添加
+		//list.insertBefore(newLi, document.getElementById("a"));
+		//删除元素
+		list.removeChild(document.getElementById("a"));
+		//替换元素
+		list.replaceChild(newLi, document.getElementById("b"));
+		//克隆元素（是否深度复制）
+		for (var i = 0; i < 3; i++) {
+			var newEle = newLi.cloneNode(true);
+			list.appendChild(newEle);
+		}
+
+		var btns = document.getElementsByTagName("button");
+		var select1 = document.getElementsByClassName("select")[0];
+		var select2 = document.getElementsByClassName("select")[1];
+
+		btns[0].onclick = function () {
+			var options = select1.getElementsByTagName("option");
+			var loop = options.length;
+			for (var i = 0; i < loop; i++) {
+				var newOption = select1.firstElementChild.cloneNode(true);
+				select2.appendChild(newOption);	
+				select1.removeChild(select1.firstElementChild);
+			}
+			// while(select1.getElementsByTagName("option").length > 0){
+			// 	select1.removeChild(select1.firstChild);	
+			// }
+		}
+
+		btns[2].onclick = function () {
+			var options = select1.getElementsByTagName("option");
+			var loop = options.length-1;
+			//为了防止数组长度变化选择反向遍历数组
+			for (var i = loop; i >= 0; i--) {
+				if (options[i].selected === true) {
+					var newOption = options[i].cloneNode(true);
+					select2.appendChild(newOption);
+					select1.removeChild(options[i]);
+				}
+			}
+
+		}
+
+	</script>
+</body>
+</html>
