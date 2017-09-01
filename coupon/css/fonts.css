@@ -1,39 +1,3 @@
-@media (width: 320px) {
-  html {
-    font-size: 16px;
-  }
-}
-@media (width: 360px) {
-  html {
-    font-size: 18px;
-  }
-}
-@media (width: 375px) {
-  html {
-    font-size: 18.75px;
-  }
-}
-@media (width: 400px) {
-  html {
-    font-size: 20px;
-  }
-}
-@media (width: 410px) {
-  html {
-    font-size: 20.7px;
-  }
-}
-body,
-h3 {
-  padding: 0;
-  margin: 0;
-}
-body {
-  background-color: #f7f4f1;
-}
-a {
-  text-decoration: none;
-}
 @font-face {
   font-family: 'icomoon';
   src: url('fonts/icomoon.eot?ta9l6l');
@@ -75,35 +39,4 @@ a {
 }
 .icon-edit:before {
   content: "\e906";
-}
-.wrapper .items {
-  padding: 0 0.75rem;
-}
-.wrapper .items .title {
-  font-size: 0.875rem;
-  margin: 0.75rem 0 0.9375rem;
-  overflow: hidden;
-}
-.wrapper .items .title h3 {
-  float: left;
-}
-.wrapper .items .title span {
-  color: #888;
-  float: right;
-}
-.wrapper .items .add {
-  height: 6.875rem;
-  border: 0.09375rem dashed #dedede;
-  background-color: #fff;
-  text-align: center;
-  padding-top: 1rem;
-}
-.wrapper .items .add a {
-  font-size: 3.25rem;
-  color: #aeaeae;
-}
-.wrapper .items .add a span {
-  display: block;
-  margin-top: 0.4375rem;
-  font-size: 0.8125rem;
 }
