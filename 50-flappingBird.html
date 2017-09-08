@@ -3,9 +3,21 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<style>
+		.container{
+			width: 750px;
+			margin: 0 auto;
+		}
+		canvas {
+			width: 750px;
+			
+		}
+	</style>
 </head>
 <body>
-	<canvas width="500" height="500"></canvas>
+	<div class="container">
+		<canvas></canvas>
+	</div>
 	<script>
 		var cvs = document.getElementsByTagName('canvas')[0];
 		var ctx = cvs.getContext('2d');
