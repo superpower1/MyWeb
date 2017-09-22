@@ -18,3 +18,4 @@ fs.stat('./conf', (err, stats) => {
 		console.log('It is a folder');
 	}
 });
+
