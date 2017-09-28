@@ -12,12 +12,20 @@ const server = http.createServer();
 // http将请求报文封装到了request对象里，request就是http.IncomingMessage
 server.on('request', function(request, response) {
 	count++;
+
 	// 注意：1.writeHead要写在write之前，也可以不写，直接写write
 	// 		 2.end要写在write之后，end之后的write没有意义
 	// writeHead(状态码, 报文头内容)
 	response.writeHead(200, {"Content-Type":"text/html;charset=utf-8"});
-	response.write("<h1>我是服务器</h1>");
+	response.write("<h1>我是服务器");
+
 	// 这里可以多次调用write写入响应报文
+	if (request.url === '/' && request.method === 'GET') {
+		response.write("的首页</h1>");
+	} else if(request.url === '/login' && request.method === 'GET'){
+		response.write("的登录页</h1>");
+	}
+
 	// end里也可以继续写内容
 	response.end("<p>服务器接收了"+count+"个请求</p>");
 }).listen(3000);
