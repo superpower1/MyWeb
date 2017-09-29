@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+// 用node去执行这个代码，必须写在第一行
+
 'use strict'
 
 const http = require('http');
