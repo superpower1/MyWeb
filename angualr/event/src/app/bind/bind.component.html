@@ -1,5 +1,29 @@
 <button (click)="doOnClick($event)">Click</button>
+
 <!-- 这两种方法是一样的 -->
 <img src="{{imgUrl}}">
 <img [src]="imgUrl">
 
+<input value="sp1" type="text" (input)="doOnInput($event)"/>
+
+<!-- 这里无论disabled传什么值，按钮都会被禁用 -->
+<!-- 如果要控制button的禁用与否应该使用DOM的disabled属性，而不是html的属性 -->
+<button disabled="">Disable</button>
+
+<!-- 一般情况应该绑定DOM属性，除非html的属性没有对应的DOM属性，比如colspan，这时候就需要绑定html属性，方法是[attr.colspan] -->
+<table>
+	<tr><td [attr.colspan]="size">"something"</td></tr>
+</table>
+
+<div [ngClass]="titleClass" [ngStyle]="titleStyle">HelloWorld</div>
+
+<!-- 双向绑定 -->
+<input type="text" [(ngModel)]="inputStr" />
+{{inputStr}}
+<br />
+
+<!-- 模板本地变量用#声明，使用时不需要# -->
+<input type="text" #myInput (keyup)="onKey(myInput.value)">
+<br />
+
+<input type="text" [formControl]="searchInput">
