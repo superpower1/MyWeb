@@ -26,4 +26,9 @@
 <input type="text" #myInput (keyup)="onKey(myInput.value)">
 <br />
 
-<input type="text" [formControl]="searchInput">
+<input type="text" [formControl]="searchInput" />
+
+<p>My multiple pipe {{2 | multiple}}</p>
+
+<!-- 通过注入属性可以将数据传给子组件，[]中的属性需要在子组件通过@Input()定义 -->
+<app-child [inputStr]="inputStr"></app-child>
