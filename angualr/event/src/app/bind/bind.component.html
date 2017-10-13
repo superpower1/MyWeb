@@ -30,5 +30,16 @@
 
 <p>My multiple pipe {{2 | multiple}}</p>
 
+<app-price-quote (priceChange)="priceChangeHandler($event)" (buy)="buyHandler($event)"></app-price-quote>
+<div>
+	<p>
+		这是父组件
+		<br>
+		Product Code: {{newPrice.code}}
+		<br>
+		Priduct Price: {{newPrice.price | number:'2.2-2'}}
+	</p>
+</div>
+
 <!-- 通过注入属性可以将数据传给子组件，[]中的属性需要在子组件通过@Input()定义 -->
-<app-child [inputStr]="inputStr"></app-child>
+<app-child [buyPrice]="buyPrice"></app-child>

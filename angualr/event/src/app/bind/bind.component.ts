@@ -3,6 +3,8 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import 'rxjs/Rx';
 
+import { PriceQuote } from '../price-quote/price-quote.component';
+
 @Component({
   selector: 'app-bind',
   templateUrl: './bind.component.html',
@@ -15,6 +17,10 @@ export class BindComponent implements OnInit {
   size:number = 2;
 
   inputStr:string;
+
+  newPrice: PriceQuote = new PriceQuote('', 0);
+
+  buyPrice: PriceQuote = new PriceQuote('', 0);
 
   constructor() {
     setTimeout(() => {
@@ -84,6 +90,14 @@ export class BindComponent implements OnInit {
 
   outputSearch(value:string) {
     console.log(value);
+  }
+
+  priceChangeHandler(e: PriceQuote) {
+    this.newPrice = e;
+  }
+
+  buyHandler(e: PriceQuote) {
+    this.buyPrice = e;
   }
 
 }
