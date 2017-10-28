@@ -1,0 +1,56 @@
+Ruby
+
+哈希类Hash(键值对)
+1. 创建：h = {"key"=>"value"} 或 h = Hash.new
+2. 获取：h["key"]
+3. 转换成数组：a = h.to_a 将会转换成 [["key1","value1"],["key2","value2"]]
+4. 数组转换成哈希：a = [[1,2],[3,4]]
+                  h = a.to_h 将会转化成 {1=>2, 3=>4}
+
+文件类File
+1. 重命名：File.rename("old_name", "new_name")
+2. 复制文件：require "FileUtils"
+            FileUtils.cp("file_name", "another_name")
+3. 删除文件：File.delete("file_name")
+
+目录类Dir
+1. 打开目录：Dir.open("dir_name")
+2. 输出目录文件列表：while file_name = dir.read
+                      p file_name
+                    end
+3. 创建文件夹：Dir.mkdir("dir_name")
+4. 删除文件夹：Dir.delete("dir_name") 只能删除空文件夹
+
+时间类Time
+1. 创建时间实例：Time.new
+2. 获取当前时间：t = Time.now (t.year, t.month, t.day... 分别获取年月日)
+3. 格式化时间：Time.new.strftime("%Y/%m/%d %H:%M:%S")
+
+日期类Date
+引入：require("date")
+1. 获取日期：Date.today (Date.tody+3 3天之后的日期，与Time的加减不同的是Time是以秒为单位)
+
+迭代器
+1. 数值类的迭代
+    5.times{ |n|
+      p n
+    }
+    依次打印0,1,2,3,4
+2. 数组类
+    a = [1,2,3,4]
+    a.each{ |n|
+      p n
+    }
+    依次打印1,2,3,4
+3. 哈希类
+    h = {"a"=>"b", "c"=>"d"}
+    h.each { |key, value|
+      p "#{key}:#{value}"
+    }
+    依次打印"a:b","c:d"
+4. 排序
+    a = [1,2,3,4]
+    a.sort{ |a,b|
+      b<=>a
+    }
+    返回[4,3,2,1], 不改变原数组
