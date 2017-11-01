@@ -1,11 +1,29 @@
 Ruby
 
 哈希类Hash(键值对)
+一般使用symbol来作为key
 1. 创建：h = {"key"=>"value"} 或 h = Hash.new
 2. 获取：h["key"]
 3. 转换成数组：a = h.to_a 将会转换成 [["key1","value1"],["key2","value2"]]
 4. 数组转换成哈希：a = [[1,2],[3,4]]
                   h = a.to_h 将会转化成 {1=>2, 3=>4}
+5. 删除
+h.delete("key")
+6. 取出
+h.assoc("key")取出key和value
+h.keys 取出所有key
+h.values 取出所有value
+7. 判断
+h.has_value?("value")
+h.has_key?("key")
+8. 合并
+h.merge(h2)
+9.遍历
+h.each{|key, value| p [key, value]}
+h.each_key{|key| p key}
+h.each_value{|value| p value}
+
+
 
 文件类File
 1. 重命名：File.rename("old_name", "new_name")
@@ -54,3 +72,63 @@ Ruby
       b<=>a
     }
     返回[4,3,2,1], 不改变原数组
+
+字符串常用方法
+1. 反转字符串
+"something".reverse
+
+2. 是否包含
+"something".include?('o')
+
+3. 序号
+"something".index('o')
+
+4. 改变字符串
+"something".sub('some', 'any') 将something改为anything
+"something".sub!('some', 'any') 会改变原本的字符串
+
+5. 长度
+"something".size
+
+数组常用方法
+1. 定义
+a = []
+a = Array.new，可以定义长度以及默认值，Array.new(3, 0)
+注意：如果使用Array.new(3, 'someting')来定义字符串数组的话，每个数组元素都是reference
+要解决这个问题应使用Array.new(3) {'something'}
+a = %w(foo bar wut wat)
+
+2. 操作
+a[-1]从后往前取，也就是最后一个元素
+a[1..2]取a[1]和a[2]组成新数组返回
+a.fetch(4)取值，a.fetch(4, 'nothing')如果取不到返回nothing
+a.delete_at(0)删除
+a.uniq可以删除重复值，a.uniq!可以改变原数组
+a.shuffle打乱数组元素顺序随机排序
+a.flatten将高维数组变成一维数组
+
+3. 遍历数组
+a.each{|e| p e}打印数组
+a.reverse_each{|e| p e}反向打印数组
+a.each_with_index{|e, i| p i}可以打印序号
+a.sort 从小到大排序
+a.select{|e| e>0}取数组大于0的元素
+a.compact将数组中的nil去掉
+a.any?{|e| e<0}判断数组中是否有小于0的元素
+a << nil 将nilpush进数组
+
+Set常用方法(要先使用require 'set'引入)
+1. 创建
+s = Set.new [1,2]
+2. 添加
+s.add('foo')
+3. 集合运算
+a & b 并集
+a | b 交集
+c <= a a是否属于c（即a是否是c的子集）
+
+Range常用方法
+1. 创建
+r = 1..2
+2. 操作
+r.include?(2)
