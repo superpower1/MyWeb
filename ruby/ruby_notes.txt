@@ -197,3 +197,42 @@ Proc类
       p.call(1)会报错
       l = lambda {|x| return if x>0}
       l.call(1)不会报错
+
+Ruby中的class
+class Point
+  attr_accessor :x, :y
+
+  def initialize(x=0,y=0)
+    # @x instance variable
+    # @@x class variable
+    # $x global variable
+    # x local variable
+    @x,@y=x,y
+    @@origin = 0
+  end
+
+  # instance method
+  def first_quadrant?
+    #这里可以直接写x因为默认x是self.x，这里的self指对象
+    x>0 && y>0
+  end
+
+  # class method
+  def self.second_quadrant?(x,y)
+    # 这里的self指class
+    x<0 && y>0
+  end
+
+  # 定义复数class method
+  class << self
+    def foo
+    end
+    def bar
+    end
+    ...
+  end
+
+  def +(p)
+    Point.new(x+p.x, y+p.y)
+  end
+end
