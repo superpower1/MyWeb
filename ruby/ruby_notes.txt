@@ -132,3 +132,68 @@ Range常用方法
 r = 1..2
 2. 操作
 r.include?(2)
+
+Ruby中的alias
+alias :new_name :old_name
+
+Ruby中的self
+str= 'hello world'
+def str.foo
+  p self
+end
+将会打印'hello world'
+
+Ruby中的operator method
+重写运算符方法
+arr = [1,2,3]
+def arr.+(num)
+  self.dup << num
+end
+arr+4将会返回新的数组[1,2,3,4]
+
+Ruby中没有overload，所以Ruby中的方法可以支持默认参数和任意数量的参数
+splat operator *
+foo(a, *b, c=3) c默认等于3，b可以传入任意个参数，程序会将其转变成一个数组
+
+Ruby中的方法可以传入hash
+def foo(h)
+  h.each do |key, value|
+    p key
+  end
+end
+foo(a:3, b:4)将会打印出:a和:b
+
+Block
+如果只有一行写{}，如果是多行使用do...end，{}优先级高
+1. 使用yield
+def foo
+  a=2
+  yield a
+end
+foo { |a| puts a }
+2. 使用&
+def foo(&block)
+  a=2
+  block.call(a)
+end
+foo{ |a| puts a }
+3. Block中的return是指从使用当前block的方法中跳出
+
+Proc类
+1. proc对象
+  创建proc：p = Proc.new {|x,y| puts x,y}
+  arr = %w(a b c)
+  arr.map(&:capitalize) 将会打印[A,B,C]
+  capitalize方法会自动转为proc，然后用&将proc转变成block
+  相当于arr.map{ |a| a.capitalize}
+2. lambda对象
+  l = lambda {|x,y| puts x,y}
+3. lambda与proc的区别
+  1） p = Proc.new {|x,y| puts x,y}可以传入任意个参数
+      p.call(1)会将y输出nil，p.call(1,2,3)会忽略掉3
+      l = lambda {|x,y| puts x,y}只能传入两个参数
+      l.call(1)和l.call(1,2,3)都会报错
+  2） p = Proc.new {|x| return if x>0}
+      p.call(1)会报错
+      l = lambda {|x| return if x>0}
+      l.call(1)不会报错
