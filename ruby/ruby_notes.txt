@@ -236,3 +236,19 @@ class Point
     Point.new(x+p.x, y+p.y)
   end
 end
+
+Exception
+1. raise 'error msg'
+2. raise ErrorType, 'error msg', caller
+
+begin
+...
+rescue ArgumentError => e
+...(处理ArgumentError)
+rescue TypeError => e
+...(处理TypeError)
+else
+...(处理其他异常情况)
+ensure
+...(这里的代码无论如何都会在最后执行)
+end
