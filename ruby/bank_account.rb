@@ -1,6 +1,25 @@
+module Lib
+  BUCKETS = [0, 1000, 10_000, 50_000]
+  def annual_fee
+    case balance
+    when BUCKETS[0]...BUCKETS[1]
+      10
+    when BUCKETS[1]...BUCKETS[2]
+      5
+    when BUCKETS[2]...BUCKETS[3]
+      3
+    else
+      0
+    end
+  end
+end
+
 class BankAccount
 
   include Lib
+
+  include Enumerable
+  include Comparable
 
   attr_reader :balance
 
@@ -27,6 +46,11 @@ class BankAccount
     raise 'Overdraw!' if amount>@balance
     @balance -= amount
   end
+
+  def <=> other
+    @balance <=> other.balance
+  end
+
 end
 
 class CommBankAccount < BankAccount
@@ -49,18 +73,20 @@ class ANZBankAccount < BankAccount
   end
 end
 
-module Lib
-  BUCKETS = [0, 1000, 10_000, 50_000]
-  def annual_fee
-    case balance
-    when BUCKETS[0]...BUCKETS[1]
-      10
-    when BUCKETS[1]...BUCKETS[2]
-      5
-    when BUCKETS[2]...BUCKETS[3]
-      3
-    else
-      0
+class Bank
+
+  attr_reader :accounts
+
+  include Enumerable
+
+  def initialize(accounts)
+    @accounts = accounts
+  end
+
+  def each
+    raise 'Please provide a block!' unless block_given?
+    accounts.each do |account|
+      yield account
     end
   end
 end
