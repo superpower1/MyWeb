@@ -252,3 +252,82 @@ else
 ensure
 ...(这里的代码无论如何都会在最后执行)
 end
+
+Regex
+1. text =~ /abc/ # text中包含abc
+2. text =~ /^abc/ # text以abc开头
+3. text =~ /abc$/ # text以abc结尾
+4. text =~ /^abc$/ # text是'abc'
+5. text =~ /abc/i # text中包含不分大小写的abc
+6. text =~ /[a-z]/ # text中包含一个小写字母
+7. text =~ /a{3}/ # text中包含3个连续的a
+
+Date&DateTime
+1. Date.today
+  d = Date.today
+    d.year
+    d.month
+    d.day
+    d.wday
+    d+1是以天为计算单位
+2. Time
+  t = Time.now
+    t.hour
+    t.min
+    t.sec
+    t+1是以秒为计算单位
+3. String to time
+   Date.parse('09/09/2017')
+   Date.strptime('17-09-09', '%y-%m-%d')可以按照自定义格式转换成Date对象
+4. Time to string
+   Time.now.to_s
+   Time.now.strftime('%d-%m-%y')按自定义格式转换成String对象
+5. 改变Ruby环境时间
+  class Time
+    def convert_zone(to_zone)
+      original_zone = ENV["TZ"]
+      utc_time = dup.gmtime
+      ENV["TZ"] = to_zone
+      to_zone_time = utc_time.localtime
+      ENV['TZ'] = original_zone
+      to_zone_time
+    end
+  end
+
+File
+full_name="D:/webpage/ruby/ruby_notes.txt"
+1. File.basename(full_name) # "ruby_notes.txt"
+2. File.basename(full_name, '.txt') # "ruby_notes"
+3. File.dirname(full_name) # "D:/webpage/ruby"
+4. File.extname(full_name) # ".txt"
+5. File.join('D:','webpage','ruby') # "D:/webpage/ruby"
+6. File.expand_path('./') # "D:/webpage/ruby" 相对路径
+7. File.exist?('file_name') # 判断文件或文件名是否存在
+8. File.directory?('directory_name') # 判断文件夹是否存在
+9. File.file?('file_name') # 判断文件是否存在
+10. File.size('file_name') # 文件大小
+11. File.rename('old_name', 'new_name')
+12. File.delete('file_name')
+
+Dir
+1. Dir.pwd # "D:/webpage/ruby"
+2. Dir.chdir('../') # 改变路径至"D:/webpage"
+3. Dir.entries('.') # 返回所有该目录文件名组成的数组
+4. Dir['*.rb'] # 返回所有ruby文件名组成的数组
+5. Dir.glob('*.rb') {|f| puts f} # 传入block应用于每个文件
+6. Dir.mkdir('tmp') # 创建
+7. Dir.rmdir('tmp') # 删除
+
+文件读写
+1. File.open('file_name', 'r') { do_something } # 以只读方式打开文件
+2. File.open('file_name', 'w') { do_something }
+以上方式操作完后会自动关闭，否则要手动关闭例如以下代码：
+begin
+  f = File.open('file_name')
+rescue
+  puts "File not exist!"
+ensure
+  f.close if f
+end
+3. File.readlines('file_name') # 返回由文件的每一行组成的数组
+4. File.read('file_name') # 以String返回文件内容
